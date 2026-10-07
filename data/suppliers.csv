@@ -1,0 +1,232 @@
+supplier_id,supplier_name,city,state,category,product,spec,unit,price_min_inr,price_max_inr,moq,gst_verified,rating,avg_response_hrs,keywords
+S1001,Om Industries (Rajkot),Rajkot,Gujarat,Fasteners,Stainless Steel Hex Bolt,M8 SS304,piece,7.64,9.77,1390,False,3.5,6,ss bolt hex bolt nut bolt fastener stainless
+S1002,Shree Industries (Ghaziabad),Ghaziabad,Uttar Pradesh,Fasteners,Stainless Steel Hex Bolt,M8 SS304,piece,7.84,9.74,1170,True,4.5,6,ss bolt hex bolt nut bolt fastener stainless
+S1003,Balaji Exports (Rajkot),Rajkot,Gujarat,Fasteners,Stainless Steel Hex Bolt,M6 SS304,piece,18.78,21.09,900,True,3.7,4,ss bolt hex bolt nut bolt fastener stainless
+S1004,Om Traders (Chennai),Chennai,Tamil Nadu,Fasteners,Stainless Steel Hex Bolt,M6 SS304,piece,10.47,12.28,600,True,4.1,1,ss bolt hex bolt nut bolt fastener stainless
+S1005,National Sales (Ghaziabad),Ghaziabad,Uttar Pradesh,Fasteners,Stainless Steel Hex Bolt,M12 SS316,piece,9.1,11.37,1780,True,3.7,1,ss bolt hex bolt nut bolt fastener stainless
+S1006,Shree Corporation (Surat),Surat,Gujarat,Fasteners,Stainless Steel Hex Bolt,M6 SS304,piece,20.79,27.32,820,True,4.7,2,ss bolt hex bolt nut bolt fastener stainless
+S1007,Krishna Udyog (Jaipur),Jaipur,Rajasthan,Fasteners,Stainless Steel Hex Bolt,M10 SS304,piece,17.6,22.26,240,True,4.2,2,ss bolt hex bolt nut bolt fastener stainless
+S1008,Sai Exports (Chennai),Chennai,Tamil Nadu,Fasteners,Stainless Steel Hex Bolt,M10 SS304,piece,23.58,29.54,1160,True,4.7,1,ss bolt hex bolt nut bolt fastener stainless
+S1009,Balaji Industries (Mumbai),Mumbai,Maharashtra,Fasteners,Stainless Steel Hex Bolt,M8 SS316,piece,8.57,9.74,1890,False,3.9,24,ss bolt hex bolt nut bolt fastener stainless
+S1010,Jai Sales (Bengaluru),Bengaluru,Karnataka,Fasteners,Stainless Steel Hex Bolt,M8 SS304,piece,8.51,9.76,1170,True,4.3,12,ss bolt hex bolt nut bolt fastener stainless
+S1011,Laxmi Udyog (Ahmedabad),Ahmedabad,Gujarat,Fasteners,Stainless Steel Hex Bolt,M8 SS304,piece,13.6,15.02,190,True,4.3,24,ss bolt hex bolt nut bolt fastener stainless
+S1012,Laxmi Manufacturing Co. (Ghaziabad),Ghaziabad,Uttar Pradesh,Fasteners,Stainless Steel Hex Bolt,M8 SS316,piece,10.94,14.76,1110,False,4.7,1,ss bolt hex bolt nut bolt fastener stainless
+S1013,Prime Traders (Indore),Indore,Madhya Pradesh,Fasteners,Stainless Steel Hex Bolt,M10 SS304,piece,18.99,22.25,660,True,3.4,24,ss bolt hex bolt nut bolt fastener stainless
+S1014,National Impex (Kolkata),Kolkata,West Bengal,Fasteners,Stainless Steel Hex Bolt,M8 SS304,piece,13.56,15.03,1290,False,4.2,2,ss bolt hex bolt nut bolt fastener stainless
+S1015,Krishna Enterprises (Indore),Indore,Madhya Pradesh,Fasteners,MS Hex Nut,M12 black,piece,4.77,5.92,2700,True,3.9,4,nut ms nut hex nut fastener
+S1016,Balaji Industries (Ahmedabad),Ahmedabad,Gujarat,Fasteners,MS Hex Nut,M12 black,piece,4.88,5.38,2690,True,4.5,2,nut ms nut hex nut fastener
+S1017,Sai Exports (Indore),Indore,Madhya Pradesh,Fasteners,MS Hex Nut,M8 zinc plated,piece,2.09,2.75,2400,True,4.2,24,nut ms nut hex nut fastener
+S1018,Apex Corporation (Surat),Surat,Gujarat,Fasteners,MS Hex Nut,M10 zinc plated,piece,5.08,6.38,2470,True,3.6,2,nut ms nut hex nut fastener
+S1019,Om Udyog (Delhi),Delhi,Delhi,Fasteners,MS Hex Nut,M12 black,piece,3.27,4.05,530,True,3.5,1,nut ms nut hex nut fastener
+S1020,National Industries (Mumbai),Mumbai,Maharashtra,Fasteners,MS Hex Nut,M8 zinc plated,piece,3.11,3.59,2680,True,4.5,12,nut ms nut hex nut fastener
+S1021,Royal Exports (Ahmedabad),Ahmedabad,Gujarat,Fasteners,MS Hex Nut,M10 zinc plated,piece,4.31,4.88,940,True,4.0,6,nut ms nut hex nut fastener
+S1022,Unique Industries (Gurugram),Gurugram,Haryana,Fasteners,MS Hex Nut,M8 zinc plated,piece,2.65,3.1,4380,True,3.7,6,nut ms nut hex nut fastener
+S1023,Sai Sales (Ludhiana),Ludhiana,Punjab,Fasteners,MS Hex Nut,M10 zinc plated,piece,2.9,3.82,840,False,4.7,1,nut ms nut hex nut fastener
+S1024,Shree Agencies (Delhi),Delhi,Delhi,Fasteners,MS Hex Nut,M8 zinc plated,piece,4.8,6.28,1250,True,3.7,6,nut ms nut hex nut fastener
+S1025,Sai Sales (Delhi),Delhi,Delhi,Fasteners,Self Drilling Screw,12x50mm,piece,1.64,2.12,5100,True,4.8,12,screw roofing screw self drilling
+S1026,Prime Exports (Faridabad),Faridabad,Haryana,Fasteners,Self Drilling Screw,10x25mm,piece,1.71,2.29,6210,True,4.5,1,screw roofing screw self drilling
+S1027,Shree Manufacturing Co. (Hyderabad),Hyderabad,Telangana,Fasteners,Self Drilling Screw,10x25mm,piece,1.14,1.39,8660,True,3.5,2,screw roofing screw self drilling
+S1028,Laxmi Traders (Ahmedabad),Ahmedabad,Gujarat,Fasteners,Self Drilling Screw,10x25mm,piece,2.49,2.97,6250,True,4.8,2,screw roofing screw self drilling
+S1029,Prime Udyog (Ahmedabad),Ahmedabad,Gujarat,Fasteners,Self Drilling Screw,12x50mm,piece,1.95,2.46,3700,True,4.5,1,screw roofing screw self drilling
+S1030,Shree Exports (Gurugram),Gurugram,Haryana,Fasteners,Self Drilling Screw,10x25mm,piece,2.29,2.79,2190,True,3.5,2,screw roofing screw self drilling
+S1031,Krishna Impex (Ludhiana),Ludhiana,Punjab,Fasteners,Self Drilling Screw,12x50mm,piece,3.0,3.81,6510,False,4.4,1,screw roofing screw self drilling
+S1032,Prime Agencies (Surat),Surat,Gujarat,Fasteners,Self Drilling Screw,10x25mm,piece,3.25,3.63,2040,True,4.2,4,screw roofing screw self drilling
+S1033,Ganesh Manufacturing Co. (Jaipur),Jaipur,Rajasthan,Fasteners,Self Drilling Screw,12x50mm,piece,1.49,1.86,3380,True,4.8,1,screw roofing screw self drilling
+S1034,Prime Sales (Rajkot),Rajkot,Gujarat,Packaging,Corrugated Box,3 ply 12x10x8 inch,piece,8.17,10.52,1350,True,4.5,12,carton box corrugated box packaging gatta peti
+S1035,Apex Sales (Indore),Indore,Madhya Pradesh,Packaging,Corrugated Box,3 ply 12x10x8 inch,piece,13.29,17.74,1440,True,3.5,4,carton box corrugated box packaging gatta peti
+S1036,Royal Agencies (Faridabad),Faridabad,Haryana,Packaging,Corrugated Box,5 ply 18x12x12 inch,piece,14.02,16.31,1820,False,4.7,4,carton box corrugated box packaging gatta peti
+S1037,Balaji Corporation (Gurugram),Gurugram,Haryana,Packaging,Corrugated Box,5 ply 18x12x12 inch,piece,44.86,59.16,930,True,3.6,2,carton box corrugated box packaging gatta peti
+S1038,Unique Enterprises (Ludhiana),Ludhiana,Punjab,Packaging,Corrugated Box,5 ply 18x12x12 inch,piece,9.17,11.73,800,False,4.6,24,carton box corrugated box packaging gatta peti
+S1039,Vardhman Corporation (Rajkot),Rajkot,Gujarat,Packaging,Corrugated Box,3 ply 12x10x8 inch,piece,45.2,50.14,1770,False,3.7,6,carton box corrugated box packaging gatta peti
+S1040,Krishna Impex (Ahmedabad),Ahmedabad,Gujarat,Packaging,Corrugated Box,3 ply 12x10x8 inch,piece,9.12,10.33,790,False,4.9,4,carton box corrugated box packaging gatta peti
+S1041,Krishna Agencies (Chennai),Chennai,Tamil Nadu,Packaging,Corrugated Box,7 ply 24x18x18 inch,piece,54.36,66.58,1890,True,4.9,2,carton box corrugated box packaging gatta peti
+S1042,Royal Impex (Noida),Noida,Uttar Pradesh,Packaging,Corrugated Box,3 ply 12x10x8 inch,piece,36.19,42.46,1620,True,4.9,1,carton box corrugated box packaging gatta peti
+S1043,National Manufacturing Co. (Jaipur),Jaipur,Rajasthan,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,27.29,32.69,570,False,4.4,24,tape bopp tape packing tape cello tape
+S1044,Apex Corporation (Pune),Pune,Maharashtra,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,28.6,36.02,400,True,4.7,24,tape bopp tape packing tape cello tape
+S1045,Ganesh Sales (Mumbai),Mumbai,Maharashtra,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,60.91,74.9,270,True,4.0,24,tape bopp tape packing tape cello tape
+S1046,National Enterprises (Surat),Surat,Gujarat,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,53.22,57.48,360,True,4.3,24,tape bopp tape packing tape cello tape
+S1047,Krishna Exports (Bengaluru),Bengaluru,Karnataka,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,59.79,72.83,810,False,4.5,24,tape bopp tape packing tape cello tape
+S1048,Om Impex (Kolkata),Kolkata,West Bengal,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,29.81,39.86,310,True,4.6,2,tape bopp tape packing tape cello tape
+S1049,Shree Industries (Ahmedabad),Ahmedabad,Gujarat,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,56.48,72.72,510,False,4.3,24,tape bopp tape packing tape cello tape
+S1050,Apex Sales (Hyderabad),Hyderabad,Telangana,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,37.57,47.23,100,True,4.6,1,tape bopp tape packing tape cello tape
+S1051,Vardhman Sales (Ahmedabad),Ahmedabad,Gujarat,Packaging,BOPP Packing Tape,48mm x 65m brown,roll,66.41,84.2,520,True,4.8,1,tape bopp tape packing tape cello tape
+S1052,Jai Enterprises (Bengaluru),Bengaluru,Karnataka,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,73.93,97.64,650,True,4.2,12,tape bopp tape packing tape cello tape
+S1053,Jai Enterprises (Hyderabad),Hyderabad,Telangana,Packaging,BOPP Packing Tape,72mm x 100m transparent,roll,38.35,43.98,670,True,4.2,24,tape bopp tape packing tape cello tape
+S1054,Balaji Impex (Bengaluru),Bengaluru,Karnataka,Packaging,BOPP Packing Tape,48mm x 65m brown,roll,61.75,70.6,400,False,3.5,2,tape bopp tape packing tape cello tape
+S1055,Laxmi Enterprises (Jaipur),Jaipur,Rajasthan,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,148.92,174.14,260,True,4.6,6,stretch film wrap film pallet wrap
+S1056,National Manufacturing Co. (Delhi),Delhi,Delhi,Packaging,Stretch Wrap Film,20 inch 25 micron,kg,150.26,200.53,180,True,4.7,6,stretch film wrap film pallet wrap
+S1057,Maa Agencies (Ahmedabad),Ahmedabad,Gujarat,Packaging,Stretch Wrap Film,20 inch 25 micron,kg,144.72,173.33,60,True,4.4,6,stretch film wrap film pallet wrap
+S1058,Apex Enterprises (Bengaluru),Bengaluru,Karnataka,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,161.09,197.21,460,True,4.4,1,stretch film wrap film pallet wrap
+S1059,Prime Sales (Faridabad),Faridabad,Haryana,Packaging,Stretch Wrap Film,20 inch 25 micron,kg,143.91,165.53,200,True,3.9,6,stretch film wrap film pallet wrap
+S1060,Ganesh Sales (Rajkot),Rajkot,Gujarat,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,150.11,192.48,70,False,3.7,1,stretch film wrap film pallet wrap
+S1061,Vardhman Industries (Delhi),Delhi,Delhi,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,144.29,156.63,120,True,4.4,12,stretch film wrap film pallet wrap
+S1062,Vardhman Udyog (Ludhiana),Ludhiana,Punjab,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,156.72,176.19,190,True,4.8,12,stretch film wrap film pallet wrap
+S1063,Prime Sales (Chennai),Chennai,Tamil Nadu,Packaging,Stretch Wrap Film,18 inch 23 micron,kg,141.63,179.37,330,True,4.6,24,stretch film wrap film pallet wrap
+S1064,Royal Traders (Noida),Noida,Uttar Pradesh,Packaging,Stretch Wrap Film,20 inch 25 micron,kg,151.45,190.62,80,True,3.4,6,stretch film wrap film pallet wrap
+S1065,Om Sales (Pune),Pune,Maharashtra,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,218.73,261.95,380,False,3.8,12,helmet safety helmet hard hat ppe
+S1066,Vardhman Exports (Bengaluru),Bengaluru,Karnataka,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,240.28,297.94,200,True,4.8,4,helmet safety helmet hard hat ppe
+S1067,National Exports (Ahmedabad),Ahmedabad,Gujarat,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,193.71,244.15,200,True,3.9,6,helmet safety helmet hard hat ppe
+S1068,Balaji Udyog (Rajkot),Rajkot,Gujarat,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,140.9,174.85,450,True,4.2,2,helmet safety helmet hard hat ppe
+S1069,Om Corporation (Coimbatore),Coimbatore,Tamil Nadu,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,191.04,218.72,260,True,4.1,1,helmet safety helmet hard hat ppe
+S1070,Om Impex (Ahmedabad),Ahmedabad,Gujarat,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,215.91,251.03,310,True,4.2,6,helmet safety helmet hard hat ppe
+S1071,Apex Agencies (Mumbai),Mumbai,Maharashtra,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,217.92,251.29,160,True,3.7,1,helmet safety helmet hard hat ppe
+S1072,Apex Agencies (Ludhiana),Ludhiana,Punjab,Safety & PPE,Industrial Safety Helmet,ISI marked ratchet,piece,129.38,156.64,380,False,4.2,4,helmet safety helmet hard hat ppe
+S1073,Om Corporation (Surat),Surat,Gujarat,Safety & PPE,Industrial Safety Helmet,ISI marked ratchet,piece,155.68,180.84,370,True,3.5,1,helmet safety helmet hard hat ppe
+S1074,Maa Impex (Faridabad),Faridabad,Haryana,Safety & PPE,Industrial Safety Helmet,ISI marked pin lock,piece,108.67,117.72,180,True,3.9,1,helmet safety helmet hard hat ppe
+S1075,Ganesh Exports (Gurugram),Gurugram,Haryana,Safety & PPE,Industrial Safety Helmet,ISI marked ratchet,piece,162.93,179.22,330,True,3.6,12,helmet safety helmet hard hat ppe
+S1076,Ganesh Traders (Ahmedabad),Ahmedabad,Gujarat,Safety & PPE,Industrial Safety Helmet,ISI marked ratchet,piece,191.57,228.42,320,True,4.6,6,helmet safety helmet hard hat ppe
+S1077,National Exports (Surat),Surat,Gujarat,Safety & PPE,Nitrile Gloves,powder free large,box,329.47,411.07,130,True,4.8,2,gloves nitrile gloves hand gloves ppe
+S1078,Prime Corporation (Rajkot),Rajkot,Gujarat,Safety & PPE,Nitrile Gloves,powder free medium,box,305.44,344.21,30,True,4.1,12,gloves nitrile gloves hand gloves ppe
+S1079,Jai Impex (Noida),Noida,Uttar Pradesh,Safety & PPE,Nitrile Gloves,powder free medium,box,326.67,377.74,170,True,3.8,4,gloves nitrile gloves hand gloves ppe
+S1080,Vardhman Manufacturing Co. (Jaipur),Jaipur,Rajasthan,Safety & PPE,Nitrile Gloves,powder free large,box,298.59,340.6,50,True,3.6,1,gloves nitrile gloves hand gloves ppe
+S1081,Sai Impex (Surat),Surat,Gujarat,Safety & PPE,Nitrile Gloves,powder free large,box,300.15,379.97,150,False,4.2,6,gloves nitrile gloves hand gloves ppe
+S1082,Jai Traders (Noida),Noida,Uttar Pradesh,Safety & PPE,Nitrile Gloves,powder free large,box,398.99,495.95,20,True,4.4,12,gloves nitrile gloves hand gloves ppe
+S1083,Royal Industries (Rajkot),Rajkot,Gujarat,Safety & PPE,Nitrile Gloves,powder free medium,box,403.62,455.0,110,True,3.8,12,gloves nitrile gloves hand gloves ppe
+S1084,Laxmi Exports (Ghaziabad),Ghaziabad,Uttar Pradesh,Safety & PPE,Nitrile Gloves,powder free large,box,336.37,393.55,140,False,3.9,24,gloves nitrile gloves hand gloves ppe
+S1085,Jai Impex (Chennai),Chennai,Tamil Nadu,Safety & PPE,Nitrile Gloves,powder free medium,box,353.68,412.01,80,False,4.0,12,gloves nitrile gloves hand gloves ppe
+S1086,Unique Industries (Indore),Indore,Madhya Pradesh,Safety & PPE,Nitrile Gloves,powder free large,box,346.95,392.28,90,True,4.3,1,gloves nitrile gloves hand gloves ppe
+S1087,Balaji Impex (Indore),Indore,Madhya Pradesh,Safety & PPE,Nitrile Gloves,powder free medium,box,430.28,515.6,150,True,4.9,12,gloves nitrile gloves hand gloves ppe
+S1088,Vardhman Corporation (Ludhiana),Ludhiana,Punjab,Safety & PPE,Nitrile Gloves,powder free large,box,369.24,453.84,40,False,4.8,6,gloves nitrile gloves hand gloves ppe
+S1089,Prime Enterprises (Hyderabad),Hyderabad,Telangana,Safety & PPE,Safety Shoes,PU sole steel toe,pair,826.57,953.72,170,False,3.8,12,safety shoes boots ppe steel toe
+S1090,Sai Sales (Jaipur),Jaipur,Rajasthan,Safety & PPE,Safety Shoes,steel toe size 6-11,pair,1089.38,1257.78,160,True,4.8,12,safety shoes boots ppe steel toe
+S1091,Ganesh Industries (Surat),Surat,Gujarat,Safety & PPE,Safety Shoes,PU sole steel toe,pair,1069.73,1322.81,140,False,4.1,6,safety shoes boots ppe steel toe
+S1092,Krishna Udyog (Indore),Indore,Madhya Pradesh,Safety & PPE,Safety Shoes,PU sole steel toe,pair,786.96,918.29,50,True,4.3,2,safety shoes boots ppe steel toe
+S1093,Unique Sales (Noida),Noida,Uttar Pradesh,Safety & PPE,Safety Shoes,PU sole steel toe,pair,1001.08,1271.78,170,True,4.4,24,safety shoes boots ppe steel toe
+S1094,Sai Exports (Noida),Noida,Uttar Pradesh,Safety & PPE,Safety Shoes,steel toe size 6-11,pair,821.7,1018.37,180,False,4.1,12,safety shoes boots ppe steel toe
+S1095,National Exports (Delhi),Delhi,Delhi,Safety & PPE,Safety Shoes,steel toe size 6-11,pair,753.38,946.84,50,True,4.9,4,safety shoes boots ppe steel toe
+S1096,Royal Sales (Ghaziabad),Ghaziabad,Uttar Pradesh,Safety & PPE,Safety Shoes,PU sole steel toe,pair,1080.73,1417.94,90,True,4.5,6,safety shoes boots ppe steel toe
+S1097,Unique Agencies (Noida),Noida,Uttar Pradesh,Safety & PPE,Safety Shoes,steel toe size 6-11,pair,623.73,788.89,70,True,3.5,1,safety shoes boots ppe steel toe
+S1098,Apex Traders (Bengaluru),Bengaluru,Karnataka,Pipes & Fittings,PVC Pipe,1 inch 6kg,metre,237.93,315.0,140,False,3.8,4,pvc pipe plastic pipe water pipe
+S1099,Laxmi Enterprises (Ahmedabad),Ahmedabad,Gujarat,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,159.55,201.68,260,True,4.3,6,pvc pipe plastic pipe water pipe
+S1100,Royal Corporation (Hyderabad),Hyderabad,Telangana,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,84.79,102.13,330,True,3.4,6,pvc pipe plastic pipe water pipe
+S1101,National Impex (Indore),Indore,Madhya Pradesh,Pipes & Fittings,PVC Pipe,1 inch 6kg,metre,65.53,87.5,990,True,4.8,24,pvc pipe plastic pipe water pipe
+S1102,Ganesh Exports (Surat),Surat,Gujarat,Pipes & Fittings,PVC Pipe,1 inch 6kg,metre,322.83,423.04,200,True,3.9,4,pvc pipe plastic pipe water pipe
+S1103,Apex Impex (Delhi),Delhi,Delhi,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,155.03,167.77,880,True,4.9,12,pvc pipe plastic pipe water pipe
+S1104,Apex Exports (Surat),Surat,Gujarat,Pipes & Fittings,PVC Pipe,1 inch 6kg,metre,213.76,251.2,670,True,4.4,24,pvc pipe plastic pipe water pipe
+S1105,Vardhman Enterprises (Gurugram),Gurugram,Haryana,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,224.68,261.4,500,True,4.5,1,pvc pipe plastic pipe water pipe
+S1106,National Impex (Mumbai),Mumbai,Maharashtra,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,160.51,182.05,810,False,3.9,12,pvc pipe plastic pipe water pipe
+S1107,National Impex (Ludhiana),Ludhiana,Punjab,Pipes & Fittings,PVC Pipe,2 inch 6kg,metre,299.11,399.29,970,True,4.7,1,pvc pipe plastic pipe water pipe
+S1108,Jai Traders (Faridabad),Faridabad,Haryana,Pipes & Fittings,PVC Pipe,1 inch 6kg,metre,284.12,362.41,980,False,4.6,4,pvc pipe plastic pipe water pipe
+S1109,Om Sales (Delhi),Delhi,Delhi,Pipes & Fittings,PVC Pipe,2 inch 6kg,metre,194.17,233.55,710,True,4.3,24,pvc pipe plastic pipe water pipe
+S1110,Krishna Traders (Ahmedabad),Ahmedabad,Gujarat,Pipes & Fittings,PVC Pipe,2 inch 6kg,metre,51.96,68.52,610,False,3.7,1,pvc pipe plastic pipe water pipe
+S1111,Prime Exports (Surat),Surat,Gujarat,Pipes & Fittings,PVC Pipe,4 inch 4kg,metre,158.51,177.17,950,True,4.1,1,pvc pipe plastic pipe water pipe
+S1112,National Agencies (Faridabad),Faridabad,Haryana,Pipes & Fittings,GI Pipe,2 inch heavy class,metre,337.41,425.48,380,False,4.0,24,gi pipe galvanised pipe iron pipe
+S1113,Apex Enterprises (Coimbatore),Coimbatore,Tamil Nadu,Pipes & Fittings,GI Pipe,1 inch medium class,metre,469.29,584.84,470,True,4.4,2,gi pipe galvanised pipe iron pipe
+S1114,Jai Exports (Ahmedabad),Ahmedabad,Gujarat,Pipes & Fittings,GI Pipe,2 inch heavy class,metre,214.48,271.35,300,False,3.9,6,gi pipe galvanised pipe iron pipe
+S1115,Ganesh Corporation (Gurugram),Gurugram,Haryana,Pipes & Fittings,GI Pipe,2 inch heavy class,metre,211.81,240.88,340,False,3.5,4,gi pipe galvanised pipe iron pipe
+S1116,Balaji Enterprises (Jaipur),Jaipur,Rajasthan,Pipes & Fittings,GI Pipe,1 inch medium class,metre,467.95,575.41,310,False,3.7,2,gi pipe galvanised pipe iron pipe
+S1117,Vardhman Manufacturing Co. (Delhi),Delhi,Delhi,Pipes & Fittings,GI Pipe,2 inch heavy class,metre,477.87,534.77,110,True,3.7,24,gi pipe galvanised pipe iron pipe
+S1118,Unique Industries (Faridabad),Faridabad,Haryana,Pipes & Fittings,GI Pipe,1 inch medium class,metre,304.31,393.44,310,True,3.8,2,gi pipe galvanised pipe iron pipe
+S1119,Apex Sales (Kolkata),Kolkata,West Bengal,Pipes & Fittings,GI Pipe,1 inch medium class,metre,438.75,530.27,400,True,3.6,12,gi pipe galvanised pipe iron pipe
+S1120,Balaji Manufacturing Co. (Noida),Noida,Uttar Pradesh,Pipes & Fittings,GI Pipe,2 inch heavy class,metre,338.94,454.28,80,True,4.0,24,gi pipe galvanised pipe iron pipe
+S1121,Om Exports (Bengaluru),Bengaluru,Karnataka,Pipes & Fittings,GI Pipe,1 inch medium class,metre,492.05,574.21,120,True,4.3,12,gi pipe galvanised pipe iron pipe
+S1122,Apex Udyog (Chennai),Chennai,Tamil Nadu,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,2410.48,2898.61,60,True,4.5,24,wire copper wire house wire cable
+S1123,Prime Agencies (Jaipur),Jaipur,Rajasthan,Electrical,Copper House Wire,2.5 sq mm FRLS 90m,coil,2215.34,2529.24,40,True,4.0,1,wire copper wire house wire cable
+S1124,Krishna Sales (Mumbai),Mumbai,Maharashtra,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,1729.58,2313.26,70,True,3.5,1,wire copper wire house wire cable
+S1125,Om Sales (Gurugram),Gurugram,Haryana,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,2924.83,3799.87,60,True,4.2,4,wire copper wire house wire cable
+S1126,Prime Traders (Coimbatore),Coimbatore,Tamil Nadu,Electrical,Copper House Wire,2.5 sq mm FRLS 90m,coil,3257.81,4346.26,50,False,3.5,4,wire copper wire house wire cable
+S1127,Royal Impex (Pune),Pune,Maharashtra,Electrical,Copper House Wire,1.5 sq mm FR 90m,coil,2527.46,2874.83,70,True,3.6,12,wire copper wire house wire cable
+S1128,Krishna Traders (Rajkot),Rajkot,Gujarat,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,1658.61,1983.47,60,True,4.3,24,wire copper wire house wire cable
+S1129,Prime Agencies (Delhi),Delhi,Delhi,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,3394.84,4426.72,30,True,4.5,4,wire copper wire house wire cable
+S1130,National Udyog (Pune),Pune,Maharashtra,Electrical,Copper House Wire,1.5 sq mm FR 90m,coil,1548.07,1731.79,70,True,4.5,1,wire copper wire house wire cable
+S1131,Om Agencies (Jaipur),Jaipur,Rajasthan,Electrical,Copper House Wire,2.5 sq mm FRLS 90m,coil,2136.99,2504.64,40,True,4.6,12,wire copper wire house wire cable
+S1132,Sai Enterprises (Noida),Noida,Uttar Pradesh,Electrical,Copper House Wire,4 sq mm FRLS 90m,coil,1301.51,1561.34,50,True,4.0,2,wire copper wire house wire cable
+S1133,Vardhman Agencies (Gurugram),Gurugram,Haryana,Electrical,Copper House Wire,2.5 sq mm FRLS 90m,coil,2161.89,2500.18,70,True,4.4,1,wire copper wire house wire cable
+S1134,Balaji Sales (Noida),Noida,Uttar Pradesh,Electrical,Copper House Wire,1.5 sq mm FR 90m,coil,1604.93,2142.96,80,True,3.8,1,wire copper wire house wire cable
+S1135,Jai Sales (Ludhiana),Ludhiana,Punjab,Electrical,MCB,16A single pole,piece,656.09,833.23,110,False,4.6,1,mcb circuit breaker switchgear
+S1136,Laxmi Industries (Coimbatore),Coimbatore,Tamil Nadu,Electrical,MCB,16A single pole,piece,768.25,845.86,80,True,4.0,24,mcb circuit breaker switchgear
+S1137,Laxmi Impex (Gurugram),Gurugram,Haryana,Electrical,MCB,32A double pole,piece,149.41,174.46,160,True,4.6,4,mcb circuit breaker switchgear
+S1138,Balaji Sales (Chennai),Chennai,Tamil Nadu,Electrical,MCB,63A four pole,piece,230.89,303.63,150,True,4.6,1,mcb circuit breaker switchgear
+S1139,Maa Traders (Kolkata),Kolkata,West Bengal,Electrical,MCB,63A four pole,piece,393.4,507.32,80,False,4.4,2,mcb circuit breaker switchgear
+S1140,Balaji Traders (Faridabad),Faridabad,Haryana,Electrical,MCB,32A double pole,piece,398.15,494.76,160,True,3.7,24,mcb circuit breaker switchgear
+S1141,Jai Exports (Bengaluru),Bengaluru,Karnataka,Electrical,MCB,63A four pole,piece,1423.06,1753.8,130,True,4.7,24,mcb circuit breaker switchgear
+S1142,Krishna Enterprises (Bengaluru),Bengaluru,Karnataka,Electrical,MCB,16A single pole,piece,781.18,976.85,160,True,3.9,1,mcb circuit breaker switchgear
+S1143,Ganesh Exports (Bengaluru),Bengaluru,Karnataka,Electrical,MCB,16A single pole,piece,200.21,261.19,30,False,4.7,12,mcb circuit breaker switchgear
+S1144,Maa Sales (Bengaluru),Bengaluru,Karnataka,Electrical,LED Flood Light,200W IP66,piece,1708.3,2210.18,90,True,4.6,24,led flood light outdoor light
+S1145,Balaji Udyog (Hyderabad),Hyderabad,Telangana,Electrical,LED Flood Light,200W IP66,piece,792.45,869.08,20,False,3.9,24,led flood light outdoor light
+S1146,Om Agencies (Ludhiana),Ludhiana,Punjab,Electrical,LED Flood Light,50W IP65,piece,1012.38,1213.03,50,True,3.6,4,led flood light outdoor light
+S1147,National Impex (Chennai),Chennai,Tamil Nadu,Electrical,LED Flood Light,100W IP66,piece,2208.04,2789.42,10,True,3.9,4,led flood light outdoor light
+S1148,Om Agencies (Chennai),Chennai,Tamil Nadu,Electrical,LED Flood Light,100W IP66,piece,1022.03,1338.78,100,True,3.6,1,led flood light outdoor light
+S1149,Royal Enterprises (Pune),Pune,Maharashtra,Electrical,LED Flood Light,100W IP66,piece,2646.67,3357.54,50,True,4.8,4,led flood light outdoor light
+S1150,Maa Sales (Mumbai),Mumbai,Maharashtra,Electrical,LED Flood Light,50W IP65,piece,1971.16,2570.04,80,True,4.2,24,led flood light outdoor light
+S1151,Prime Sales (Kolkata),Kolkata,West Bengal,Electrical,LED Flood Light,100W IP66,piece,491.38,571.67,100,True,4.5,2,led flood light outdoor light
+S1152,Balaji Enterprises (Faridabad),Faridabad,Haryana,Electrical,LED Flood Light,50W IP65,piece,1121.45,1449.8,60,True,4.5,12,led flood light outdoor light
+S1153,Shree Udyog (Faridabad),Faridabad,Haryana,Electrical,LED Flood Light,200W IP66,piece,1305.15,1466.74,80,True,4.6,2,led flood light outdoor light
+S1154,Apex Exports (Noida),Noida,Uttar Pradesh,Electrical,LED Flood Light,100W IP66,piece,1276.96,1627.21,100,True,4.5,6,led flood light outdoor light
+S1155,Balaji Agencies (Ahmedabad),Ahmedabad,Gujarat,Electrical,LED Flood Light,100W IP66,piece,2641.9,3412.75,90,True,4.4,12,led flood light outdoor light
+S1156,Jai Exports (Surat),Surat,Gujarat,Electrical,LED Flood Light,100W IP66,piece,1591.6,1898.84,20,True,4.3,4,led flood light outdoor light
+S1157,Prime Exports (Pune),Pune,Maharashtra,Solar,Mono PERC Solar Panel,335W,piece,13727.68,17462.68,30,True,3.5,2,solar panel solar plate pv module
+S1158,Ganesh Exports (Kolkata),Kolkata,West Bengal,Solar,Mono PERC Solar Panel,540W,piece,13260.49,14649.69,50,False,4.7,1,solar panel solar plate pv module
+S1159,Laxmi Industries (Chennai),Chennai,Tamil Nadu,Solar,Mono PERC Solar Panel,335W,piece,11192.18,13254.51,10,True,3.9,1,solar panel solar plate pv module
+S1160,Unique Udyog (Faridabad),Faridabad,Haryana,Solar,Mono PERC Solar Panel,540W,piece,9673.32,12843.24,30,False,4.5,6,solar panel solar plate pv module
+S1161,Jai Manufacturing Co. (Delhi),Delhi,Delhi,Solar,Mono PERC Solar Panel,540W,piece,9585.99,10911.03,10,False,4.3,6,solar panel solar plate pv module
+S1162,Ganesh Traders (Noida),Noida,Uttar Pradesh,Solar,Mono PERC Solar Panel,540W,piece,11399.71,14755.25,30,True,4.8,12,solar panel solar plate pv module
+S1163,Maa Industries (Kolkata),Kolkata,West Bengal,Solar,Mono PERC Solar Panel,335W,piece,10594.77,11853.07,20,True,3.8,6,solar panel solar plate pv module
+S1164,Sai Traders (Kolkata),Kolkata,West Bengal,Solar,Mono PERC Solar Panel,445W,piece,9806.25,11983.59,30,False,4.2,6,solar panel solar plate pv module
+S1165,Unique Exports (Noida),Noida,Uttar Pradesh,Solar,Mono PERC Solar Panel,335W,piece,11250.64,13284.66,40,True,3.5,2,solar panel solar plate pv module
+S1166,Prime Traders (Mumbai),Mumbai,Maharashtra,Textiles,Cotton Fabric,60s poplin white,metre,60.85,74.69,4160,True,4.6,6,cotton fabric kapda cloth textile
+S1167,Apex Exports (Ludhiana),Ludhiana,Punjab,Textiles,Cotton Fabric,60s poplin white,metre,63.33,81.67,2560,True,3.5,2,cotton fabric kapda cloth textile
+S1168,Laxmi Agencies (Hyderabad),Hyderabad,Telangana,Textiles,Cotton Fabric,40s cambric dyed,metre,59.83,75.07,1790,False,3.5,24,cotton fabric kapda cloth textile
+S1169,Krishna Impex (Gurugram),Gurugram,Haryana,Textiles,Cotton Fabric,40s cambric dyed,metre,112.68,133.86,2480,False,3.9,2,cotton fabric kapda cloth textile
+S1170,Jai Exports (Pune),Pune,Maharashtra,Textiles,Cotton Fabric,denim 12oz,metre,90.21,99.44,2410,True,4.9,2,cotton fabric kapda cloth textile
+S1171,Maa Impex (Mumbai),Mumbai,Maharashtra,Textiles,Cotton Fabric,60s poplin white,metre,65.57,82.52,1880,True,4.0,24,cotton fabric kapda cloth textile
+S1172,Jai Udyog (Bengaluru),Bengaluru,Karnataka,Textiles,Cotton Fabric,60s poplin white,metre,150.94,200.17,3270,True,4.4,1,cotton fabric kapda cloth textile
+S1173,Maa Enterprises (Delhi),Delhi,Delhi,Textiles,Cotton Fabric,60s poplin white,metre,167.02,210.96,2470,True,3.8,24,cotton fabric kapda cloth textile
+S1174,Krishna Udyog (Chennai),Chennai,Tamil Nadu,Textiles,Cotton Fabric,denim 12oz,metre,59.27,66.47,2520,True,4.1,1,cotton fabric kapda cloth textile
+S1175,Royal Enterprises (Kolkata),Kolkata,West Bengal,Textiles,Cotton Fabric,40s cambric dyed,metre,107.54,135.0,1620,True,4.5,6,cotton fabric kapda cloth textile
+S1176,Maa Sales (Indore),Indore,Madhya Pradesh,Textiles,Cotton Fabric,60s poplin white,metre,89.55,103.01,2510,False,3.8,6,cotton fabric kapda cloth textile
+S1177,Unique Traders (Bengaluru),Bengaluru,Karnataka,Textiles,Cotton Fabric,60s poplin white,metre,173.63,208.39,900,True,4.7,4,cotton fabric kapda cloth textile
+S1178,Prime Udyog (Ghaziabad),Ghaziabad,Uttar Pradesh,Textiles,Cotton Fabric,denim 12oz,metre,126.57,167.16,4330,True,4.8,24,cotton fabric kapda cloth textile
+S1179,Sai Udyog (Kolkata),Kolkata,West Bengal,Textiles,Cotton Fabric,60s poplin white,metre,71.02,80.56,1120,False,3.4,12,cotton fabric kapda cloth textile
+S1180,Krishna Exports (Indore),Indore,Madhya Pradesh,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,47.0,51.85,3440,False,4.5,12,caustic soda sodium hydroxide flakes
+S1181,Laxmi Sales (Ghaziabad),Ghaziabad,Uttar Pradesh,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,52.29,65.54,4770,True,3.9,12,caustic soda sodium hydroxide flakes
+S1182,Prime Manufacturing Co. (Ludhiana),Ludhiana,Punjab,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,44.36,58.82,1030,True,3.6,2,caustic soda sodium hydroxide flakes
+S1183,Sai Udyog (Ahmedabad),Ahmedabad,Gujarat,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,51.93,63.36,3200,True,3.7,12,caustic soda sodium hydroxide flakes
+S1184,Ganesh Enterprises (Surat),Surat,Gujarat,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,45.39,51.09,9450,True,4.4,24,caustic soda sodium hydroxide flakes
+S1185,National Manufacturing Co. (Mumbai),Mumbai,Maharashtra,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,50.13,54.52,930,True,4.3,24,caustic soda sodium hydroxide flakes
+S1186,Balaji Manufacturing Co. (Coimbatore),Coimbatore,Tamil Nadu,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,45.32,56.62,3250,False,4.1,24,caustic soda sodium hydroxide flakes
+S1187,Laxmi Impex (Bengaluru),Bengaluru,Karnataka,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,48.12,54.02,4450,True,3.9,2,caustic soda sodium hydroxide flakes
+S1188,Krishna Udyog (Pune),Pune,Maharashtra,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,39.92,47.11,5840,True,4.1,4,caustic soda sodium hydroxide flakes
+S1189,Jai Corporation (Faridabad),Faridabad,Haryana,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,38.74,51.73,8710,True,4.8,2,caustic soda sodium hydroxide flakes
+S1190,Unique Udyog (Mumbai),Mumbai,Maharashtra,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,49.22,59.78,5390,True,3.9,1,caustic soda sodium hydroxide flakes
+S1191,Om Sales (Kolkata),Kolkata,West Bengal,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,52.21,59.42,3850,True,4.1,24,caustic soda sodium hydroxide flakes
+S1192,Maa Industries (Gurugram),Gurugram,Haryana,Chemicals,Caustic Soda Flakes,98% purity 50kg bag,kg,39.97,46.02,3970,True,3.5,1,caustic soda sodium hydroxide flakes
+S1193,Maa Corporation (Pune),Pune,Maharashtra,Agriculture,Basmati Rice,pusa raw,kg,72.32,85.65,11810,True,4.6,12,basmati rice chawal rice
+S1194,Prime Manufacturing Co. (Gurugram),Gurugram,Haryana,Agriculture,Basmati Rice,1121 steam sella,kg,96.86,114.91,20080,True,4.8,2,basmati rice chawal rice
+S1195,Balaji Manufacturing Co. (Kolkata),Kolkata,West Bengal,Agriculture,Basmati Rice,1509 golden sella,kg,79.88,87.25,4290,True,4.1,6,basmati rice chawal rice
+S1196,Sai Manufacturing Co. (Kolkata),Kolkata,West Bengal,Agriculture,Basmati Rice,1121 steam sella,kg,73.72,91.82,4900,False,4.5,4,basmati rice chawal rice
+S1197,Royal Udyog (Kolkata),Kolkata,West Bengal,Agriculture,Basmati Rice,pusa raw,kg,81.03,103.02,8190,False,4.0,24,basmati rice chawal rice
+S1198,Om Sales (Surat),Surat,Gujarat,Agriculture,Basmati Rice,pusa raw,kg,93.18,116.47,15330,True,4.4,12,basmati rice chawal rice
+S1199,Royal Corporation (Noida),Noida,Uttar Pradesh,Agriculture,Basmati Rice,pusa raw,kg,79.18,96.72,18310,True,4.0,24,basmati rice chawal rice
+S1200,Balaji Industries (Gurugram),Gurugram,Haryana,Agriculture,Basmati Rice,1121 steam sella,kg,62.68,73.0,4630,True,4.0,12,basmati rice chawal rice
+S1201,National Exports (Noida),Noida,Uttar Pradesh,Agriculture,Basmati Rice,pusa raw,kg,66.94,76.04,8800,True,4.2,4,basmati rice chawal rice
+S1202,Krishna Agencies (Pune),Pune,Maharashtra,Agriculture,Basmati Rice,pusa raw,kg,89.6,114.21,16440,True,4.3,2,basmati rice chawal rice
+S1203,Ganesh Corporation (Surat),Surat,Gujarat,Agriculture,Basmati Rice,1509 golden sella,kg,87.2,110.43,12740,True,4.2,24,basmati rice chawal rice
+S1204,Ganesh Impex (Gurugram),Gurugram,Haryana,Agriculture,Basmati Rice,pusa raw,kg,86.19,101.92,24520,False,4.8,2,basmati rice chawal rice
+S1205,Apex Traders (Pune),Pune,Maharashtra,Agriculture,Basmati Rice,1509 golden sella,kg,85.45,109.53,6140,False,3.8,12,basmati rice chawal rice
+S1206,Ganesh Enterprises (Gurugram),Gurugram,Haryana,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,4794.16,6044.74,30,True,3.5,6,office chair chair revolving chair furniture
+S1207,Krishna Exports (Gurugram),Gurugram,Haryana,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,3234.07,3973.36,50,True,4.8,6,office chair chair revolving chair furniture
+S1208,Jai Corporation (Surat),Surat,Gujarat,Office Furniture,Ergonomic Office Chair,high back leatherette,piece,5076.61,5563.83,40,True,3.7,24,office chair chair revolving chair furniture
+S1209,Apex Industries (Ludhiana),Ludhiana,Punjab,Office Furniture,Ergonomic Office Chair,high back leatherette,piece,9000.76,10148.02,50,False,4.0,6,office chair chair revolving chair furniture
+S1210,Sai Impex (Noida),Noida,Uttar Pradesh,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,5161.93,6415.0,50,True,4.1,24,office chair chair revolving chair furniture
+S1211,Maa Agencies (Hyderabad),Hyderabad,Telangana,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,8795.72,10610.85,10,True,3.6,6,office chair chair revolving chair furniture
+S1212,Prime Impex (Ludhiana),Ludhiana,Punjab,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,8043.26,10404.02,30,True,3.7,24,office chair chair revolving chair furniture
+S1213,National Sales (Coimbatore),Coimbatore,Tamil Nadu,Office Furniture,Ergonomic Office Chair,high back leatherette,piece,3770.3,4753.21,10,True,3.9,2,office chair chair revolving chair furniture
+S1214,Shree Impex (Chennai),Chennai,Tamil Nadu,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,6137.29,7070.7,20,True,4.3,4,office chair chair revolving chair furniture
+S1215,Shree Traders (Bengaluru),Bengaluru,Karnataka,Office Furniture,Ergonomic Office Chair,high back leatherette,piece,4250.14,5377.45,50,False,4.6,24,office chair chair revolving chair furniture
+S1216,Om Impex (Pune),Pune,Maharashtra,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,4640.77,5179.39,10,True,4.3,6,office chair chair revolving chair furniture
+S1217,Apex Agencies (Hyderabad),Hyderabad,Telangana,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,8209.23,10373.94,30,False,4.2,12,office chair chair revolving chair furniture
+S1218,Apex Udyog (Ghaziabad),Ghaziabad,Uttar Pradesh,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,3606.06,4427.76,30,True,3.6,4,office chair chair revolving chair furniture
+S1219,Unique Agencies (Bengaluru),Bengaluru,Karnataka,Office Furniture,Ergonomic Office Chair,mesh back with headrest,piece,7672.94,9772.01,30,False,4.1,1,office chair chair revolving chair furniture
+S1220,Sai Agencies (Coimbatore),Coimbatore,Tamil Nadu,Machinery,Mini Dal Mill Machine,3 HP 300 kg/hr,unit,108299.03,133302.59,1,True,3.4,4,dal mill machine pulse machine food processing
+S1221,Unique Industries (Jaipur),Jaipur,Rajasthan,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,50083.78,58749.42,1,False,4.8,1,dal mill machine pulse machine food processing
+S1222,Ganesh Sales (Ludhiana),Ludhiana,Punjab,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,130964.16,176035.47,1,True,4.9,6,dal mill machine pulse machine food processing
+S1223,Jai Sales (Chennai),Chennai,Tamil Nadu,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,121636.48,153101.89,1,True,3.9,2,dal mill machine pulse machine food processing
+S1224,Maa Sales (Kolkata),Kolkata,West Bengal,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,126702.08,144456.38,1,True,3.8,24,dal mill machine pulse machine food processing
+S1225,Apex Agencies (Coimbatore),Coimbatore,Tamil Nadu,Machinery,Mini Dal Mill Machine,3 HP 300 kg/hr,unit,137422.21,157599.67,1,True,4.8,24,dal mill machine pulse machine food processing
+S1226,Vardhman Traders (Noida),Noida,Uttar Pradesh,Machinery,Mini Dal Mill Machine,3 HP 300 kg/hr,unit,114025.13,151970.9,1,True,3.5,12,dal mill machine pulse machine food processing
+S1227,Shree Exports (Noida),Noida,Uttar Pradesh,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,128125.74,152291.75,1,True,4.7,1,dal mill machine pulse machine food processing
+S1228,Sai Agencies (Surat),Surat,Gujarat,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,136572.01,174472.07,1,True,4.4,4,dal mill machine pulse machine food processing
+S1229,Balaji Impex (Faridabad),Faridabad,Haryana,Machinery,Mini Dal Mill Machine,1 HP 100 kg/hr,unit,91422.13,105527.79,1,True,4.5,2,dal mill machine pulse machine food processing
+S1230,Prime Sales (Indore),Indore,Madhya Pradesh,Machinery,Mini Dal Mill Machine,3 HP 300 kg/hr,unit,50262.74,58957.79,1,True,4.2,24,dal mill machine pulse machine food processing
+S1231,Laxmi Sales (Faridabad),Faridabad,Haryana,Machinery,Mini Dal Mill Machine,3 HP 300 kg/hr,unit,87257.66,112011.99,1,False,3.9,24,dal mill machine pulse machine food processing
