@@ -55,8 +55,10 @@ def run(mode: str, report: Path | None, dataset: str = "eval_set.jsonl") -> dict
         c[key][0] += int(bool(ok)); c[key][1] += 1
 
     guard_catches, llm_errors = 0, 0
-    for case in cases:
+    for i, case in enumerate(cases, 1):
         g, r = case["gold"], agent.run(case["inquiry"])
+        err = f"  LLM ERROR: {r.llm_errors[0]}" if r.llm_errors else ""
+        print(f"[{i}/{len(cases)}] case {case['id']}: {r.action} ({r.total_ms / 1000:.1f}s){err}", flush=True)
         lat.append(r.total_ms); tok_in.append(r.tokens_in); tok_out.append(r.tokens_out)
         guard_catches += len(r.guard_events)
         llm_errors += len(r.llm_errors)
