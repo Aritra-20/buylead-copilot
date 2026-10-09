@@ -4,6 +4,8 @@
 
 > "helmat 200 pcs urjent delhi" → *Industrial Safety Helmet · 200 pieces · Delhi · urgent* → 3 ranked NCR suppliers with reasons → 3 ready-to-send quote requests.
 
+**▶ Live demo: [buylead-copilot.streamlit.app](https://buylead-copilot.streamlit.app)** (Gemini engine)
+
 Built as a product + AI prototype for B2B marketplaces such as IndiaMART. All supplier data is **synthetic** (generated with a fixed seed in `scripts/generate_catalog.py`).
 
 ![screenshot](docs/screenshot.png)
@@ -57,7 +59,7 @@ Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** wri
 
 **What this shows:** the rules baseline looks great on the set it was built against and degrades on unseen phrasing - especially **false matches** ("laptops" → office chairs, "copper scrap" → copper wire, "turmeric powder" → powder-free gloves). With the LLM extractor + verifier, held-out action accuracy rises from **85% to 100%** and false matches fall from **50% to 0%**, while the output guards keep unsafe drafts at 0%. The trade-off is cost and speed: ~1,550 tokens and up to 5 LLM calls per inquiry instead of a 2 ms rules lookup - which is why the PRD keeps rules as the fallback.
 
-\* Latency is dominated by the free-tier throttle (10 requests/min ≈ 6 s between calls, up to 5 calls per inquiry), not the model; unthrottled latency is still to be measured. Caveat: the sets are small (60 cases, 10 out-of-catalog), so treat 100% / 0% as "no errors observed", not a guarantee. Full per-case tables: [`EVAL_REPORT_RULES.md`](docs/EVAL_REPORT_RULES.md), [`EVAL_REPORT_RULES_HELDOUT.md`](docs/EVAL_REPORT_RULES_HELDOUT.md), [`EVAL_REPORT_LLM.md`](docs/EVAL_REPORT_LLM.md), [`EVAL_REPORT_LLM_HELDOUT.md`](docs/EVAL_REPORT_LLM_HELDOUT.md).
+\* Latency is dominated by the free-tier throttle (10 requests/min ≈ 6 s between calls, up to 5 calls per inquiry), not the model; unthrottled, the live demo answers a full inquiry (extract, verify, 3 drafts) in ~4 s (single run; not yet benchmarked). Caveat: the sets are small (60 cases, 10 out-of-catalog), so treat 100% / 0% as "no errors observed", not a guarantee. Full per-case tables: [`EVAL_REPORT_RULES.md`](docs/EVAL_REPORT_RULES.md), [`EVAL_REPORT_RULES_HELDOUT.md`](docs/EVAL_REPORT_RULES_HELDOUT.md), [`EVAL_REPORT_LLM.md`](docs/EVAL_REPORT_LLM.md), [`EVAL_REPORT_LLM_HELDOUT.md`](docs/EVAL_REPORT_LLM_HELDOUT.md).
 
 **LLM mode** - run it yourself with an API key; the report adds the provider/model, tokens/query, cost/query, p95 latency and how many LLM calls failed and fell back to rules:
 ```bash
