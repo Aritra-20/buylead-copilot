@@ -82,6 +82,15 @@ def _retryable(e: Exception) -> bool:
     return code in (429, 500, 503) or "RESOURCE_EXHAUSTED" in str(e) or "UNAVAILABLE" in str(e)
 
 
+def describe_error(e: Exception) -> str:
+    """Short, key-free description of an API error for traces, e.g. 'ClientError 429 RESOURCE_EXHAUSTED: ...'."""
+    code = getattr(e, "code", None) or getattr(e, "status_code", None)
+    status = getattr(e, "status", None)
+    msg = (getattr(e, "message", None) or str(e)).replace("\n", " ")
+    head = " ".join(str(x) for x in (type(e).__name__, code, status) if x)
+    return f"{head}: {msg[:140]}"
+
+
 def _parse_json(text: str) -> dict:
     """Parse the model's JSON, tolerating ```json fences or stray prose around the object."""
     text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()

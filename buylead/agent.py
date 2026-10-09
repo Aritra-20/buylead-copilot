@@ -14,7 +14,7 @@ import time
 from .catalog import products
 from .draft import LLMDrafter, LLMVerifier, check_draft, template_draft
 from .extract import LLMExtractor, RuleExtractor, ground_requirement
-from .llm import GeminiEmbedder, embeddings_backend
+from .llm import GeminiEmbedder, describe_error, embeddings_backend
 from .retrieve import NeuralIndex, retrieve
 from .schema import Result, TraceStep
 
@@ -55,7 +55,7 @@ class BuyLeadAgent:
             req, step = self.extractor.extract(inquiry)
         except Exception as e:  # noqa: BLE001
             req, step = self.rules.extract(inquiry)
-            step.notes.append(f"LLM extraction failed ({type(e).__name__}); used rules fallback")
+            step.notes.append(f"LLM extraction failed ({describe_error(e)}); used rules fallback")
         req = ground_requirement(req, inquiry, step)
         trace.append(step)
         res = Result(inquiry=inquiry, mode=self.mode, requirement=req, action="match", trace=trace)
@@ -70,7 +70,7 @@ class BuyLeadAgent:
             try:
                 product, sim, _, suppliers, rstep = retrieve(req, neural_index(self._embedder))
             except Exception as e:  # noqa: BLE001
-                fallback_note = f"neural embedding failed ({type(e).__name__}); used TF-IDF fallback"
+                fallback_note = f"neural embedding failed ({describe_error(e)}); used TF-IDF fallback"
                 product, sim, _, suppliers, rstep = retrieve(req)
         else:
             product, sim, _, suppliers, rstep = retrieve(req)
@@ -88,7 +88,7 @@ class BuyLeadAgent:
                     vstep.notes.append(f"GUARD: verifier rejected match '{product}'")
                     product, suppliers = None, []
             except Exception as e:  # noqa: BLE001
-                trace.append(TraceStep("verify:llm", 0, notes=[f"verifier failed ({type(e).__name__}); kept match"]))
+                trace.append(TraceStep("verify:llm", 0, notes=[f"verifier failed ({describe_error(e)}); kept match"]))
 
         if product is None:
             res.action = "refuse"
@@ -120,7 +120,7 @@ class BuyLeadAgent:
                     dstep.tokens_out += to
                     source = "llm"
                 except Exception as e:  # noqa: BLE001
-                    dstep.notes.append(f"LLM draft failed ({type(e).__name__}); used template")
+                    dstep.notes.append(f"LLM draft failed ({describe_error(e)}); used template")
             if text is None:
                 text = template_draft(s, req, product)
             problems = check_draft(text, s, req, suppliers)
