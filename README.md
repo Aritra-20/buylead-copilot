@@ -18,7 +18,7 @@ Matching them badly costs **two** customers at once: the buyer gets irrelevant q
 
 ```
 buyer text ──► 1. EXTRACT ──► 2. GROUND ──► 3. RETRIEVE ──► 4. VERIFY ──► 5. DECIDE ──► 6. DRAFT + GUARD
-               Claude tool    drop values    vector search   LLM yes/no    match /       RFQ per supplier,
+               LLM tool call  drop values    vector search   LLM yes/no    match /       RFQ per supplier,
                call (JSON     not in the     over catalog,   "is this      clarify /     blocked if it invents
                schema) or     buyer's own    rank suppliers  really what   refuse        a price or supplier
                rules          words          with reasons    they want?"
@@ -26,7 +26,7 @@ buyer text ──► 1. EXTRACT ──► 2. GROUND ──► 3. RETRIEVE ──
 
 | Step | What | AI concepts used |
 |---|---|---|
-| Extract | System prompt + 3 few-shot examples + **forced tool call** with a JSON schema → always-valid structured output | Structured prompting, few-shot, tool use |
+| Extract | System prompt + 3 few-shot examples + **forced tool call** with a JSON schema (Gemini: JSON mode with the same schema) → always-valid structured output | Structured prompting, few-shot, tool use |
 | Ground | Every quantity / city / spec must appear in the buyer's text, otherwise it's dropped and logged | Hallucination detection |
 | Retrieve | Product resolution by cosine similarity over word + character n-gram vectors (typo-tolerant); **refuses below a confidence threshold** | Embeddings, vector search, RAG |
 | Verify | A cheap second LLM call rejects false matches vector search can't (e.g. "turmeric *powder*" ≠ "*powder*-free gloves") | LLM-as-judge, re-ranking |
@@ -34,6 +34,8 @@ buyer text ──► 1. EXTRACT ──► 2. GROUND ──► 3. RETRIEVE ──
 | Draft + guard | Drafts use only catalog facts; any rupee value or supplier not in the record → fallback template | Output guardrails, prompt-injection defence |
 
 Every LLM step falls back to the rules engine if the API fails, and every run produces a **trace** with latency, tokens and guard events.
+
+**Model-agnostic:** the agent runs on **Claude** or **Gemini** behind one interface (`buylead/llm.py`), so the same prompts, guardrails and eval harness compare providers like-for-like. Pick one with `BUYLEAD_PROVIDER=anthropic|gemini`, or just set one API key.
 
 ## Evaluation
 Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** written after the baseline was built (not tuned on). Both cover clean English, Hinglish, typos, missing quantity, missing location, out-of-catalog products and prompt-injection attempts.
@@ -52,18 +54,22 @@ Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** wri
 
 **What this shows:** the baseline looks great on the set it was built against and degrades on unseen phrasing - especially **false matches** ("laptops" → office chairs, "copper scrap" → copper wire, "turmeric powder" → powder-free gloves). That gap is exactly what the LLM extractor + verifier are for. Full per-case tables: [`docs/EVAL_REPORT_RULES.md`](docs/EVAL_REPORT_RULES.md), [`docs/EVAL_REPORT_RULES_HELDOUT.md`](docs/EVAL_REPORT_RULES_HELDOUT.md).
 
-**LLM mode** - run it yourself with an API key; the report adds tokens/query, cost/query and p95 latency:
+**LLM mode** - run it yourself with an API key; the report adds the provider/model, tokens/query, cost/query, p95 latency and how many LLM calls failed and fell back to rules:
 ```bash
-export ANTHROPIC_API_KEY=...            # BUYLEAD_PRICE_IN / BUYLEAD_PRICE_OUT = USD per 1M tokens, for cost
+# Gemini (free tier key: https://aistudio.google.com/apikey)
+export GEMINI_API_KEY=...               # PowerShell: $env:GEMINI_API_KEY = "..."
+# or Claude:  export ANTHROPIC_API_KEY=...
+# optional: BUYLEAD_PRICE_IN / BUYLEAD_PRICE_OUT = USD per 1M tokens, for cost/query
 python -m buylead.eval --mode llm --report docs/EVAL_REPORT_LLM.md
 python -m buylead.eval --mode llm --data heldout_set.jsonl --report docs/EVAL_REPORT_LLM_HELDOUT.md
 ```
+On the Gemini free tier, requests are throttled to `BUYLEAD_RPM` (default 10/min) and retried on rate limits, so a full run takes ~20 minutes.
 
 ## Run it
 ```bash
 pip install -r requirements.txt
 streamlit run app.py                    # UI; works without an API key in "Rules baseline" mode
-pytest -q                               # 11 offline tests, incl. a fake "hallucinating" LLM
+pytest -q                               # 15 offline tests, incl. fake "hallucinating" Claude and Gemini clients
 ```
 ```python
 from buylead import BuyLeadAgent
@@ -73,6 +79,7 @@ r.action, r.requirement, r.suppliers, r.drafts, r.trace
 
 ## Repo map
 ```
+buylead/llm.py        provider switch: Claude or Gemini behind one interface (throttling, retries)
 buylead/extract.py    LLM + rules extractors, prompt, JSON schema, grounding guard
 buylead/retrieve.py   vector index, confidence threshold, supplier ranking with reasons
 buylead/draft.py      LLM verifier, RFQ drafters, output guard
@@ -80,7 +87,7 @@ buylead/agent.py      orchestration + decision policy (match / clarify / refuse)
 buylead/eval.py       evaluation harness + markdown reports
 data/                 synthetic catalog, dev + held-out eval sets
 docs/PRD.md           one-page PRD: problem, trade-offs, metrics, risks
-tests/                offline tests (fake Anthropic client)
+tests/                offline tests (fake Claude and Gemini clients)
 ```
 
 ## Limitations & next steps
@@ -89,4 +96,4 @@ tests/                offline tests (fake Anthropic client)
 - Next: LLM-vs-baseline comparison on cost and p95 latency, then a shadow launch measuring "% inquiries with ≥1 relevant quote in 24h".
 
 ---
-Built by [Aritra Pal](https://www.aritrapal.me) · Python, Claude API, scikit-learn, Streamlit · built with Claude Code
+Built by [Aritra Pal](https://www.aritrapal.me) · Python, Claude API / Gemini API, scikit-learn, Streamlit · built with Claude Code

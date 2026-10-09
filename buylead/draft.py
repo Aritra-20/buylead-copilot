@@ -11,10 +11,10 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import time
 
+from .llm import make_client, resolve_model
 from .schema import Requirement, TraceStep
 
 
@@ -64,10 +64,9 @@ def check_draft(draft: str, s: dict, req: Requirement, shortlist: list[dict]) ->
 class LLMClientMixin:
     def __init__(self, client=None, model: str | None = None):
         if client is None:
-            import anthropic
-            client = anthropic.Anthropic()
+            client = make_client()
         self.client = client
-        self.model = model or os.getenv("BUYLEAD_MODEL", "claude-haiku-5-5")
+        self.model = resolve_model(client, model)
 
     def _text(self, system: str, user: str, max_tokens: int) -> tuple[str, int, int]:
         resp = self.client.messages.create(

@@ -1,22 +1,24 @@
 """Streamlit demo UI.   Run:  streamlit run app.py"""
-import os
-
 import pandas as pd
 import streamlit as st
 
 from buylead import BuyLeadAgent
+from buylead.llm import default_model, provider_name
 
 st.set_page_config(page_title="BuyLead Copilot", page_icon="📦", layout="wide")
 st.title("📦 BuyLead Copilot")
 st.caption("Messy B2B buyer inquiry → structured RFQ → best-fit suppliers → ready-to-send quote requests. "
            "Supplier data is synthetic.")
 
-has_key = bool(os.getenv("ANTHROPIC_API_KEY"))
-mode = st.sidebar.radio("Engine", ["llm", "rules"], index=0 if has_key else 1,
-                        format_func=lambda m: "Claude (LLM)" if m == "llm" else "Rules baseline (no API key)")
-if mode == "llm" and not has_key:
-    st.sidebar.error("Set ANTHROPIC_API_KEY to use the LLM engine.")
+provider = provider_name()  # "anthropic", "gemini" or None (no API key set)
+llm_label = {"anthropic": "Claude", "gemini": "Gemini"}.get(provider, "LLM")
+mode = st.sidebar.radio("Engine", ["llm", "rules"], index=0 if provider else 1,
+                        format_func=lambda m: f"{llm_label} (LLM)" if m == "llm" else "Rules baseline (no API key)")
+if mode == "llm" and not provider:
+    st.sidebar.error("Set GEMINI_API_KEY or ANTHROPIC_API_KEY to use the LLM engine.")
     st.stop()
+if provider and mode == "llm":
+    st.sidebar.caption(f"Model: {default_model(provider)}")
 
 examples = [
     "Need 500 SS bolts M8 urgently in Delhi, send best rate",

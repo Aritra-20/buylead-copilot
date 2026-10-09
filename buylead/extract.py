@@ -3,7 +3,7 @@
 Two interchangeable extractors:
   * RuleExtractor - regex + lexicon baseline. Free, instant, no API key. Used as the
     comparison baseline in evals and as the fallback if the LLM call fails.
-  * LLMExtractor  - Claude with a system prompt, few-shot examples and a forced
+  * LLMExtractor  - Claude or Gemini (see llm.py) with a system prompt, few-shot examples and a forced
     tool call (JSON schema) so the output is always machine-readable.
 
 Both outputs go through `ground_requirement`, a guard that drops any field the model
@@ -12,11 +12,11 @@ Both outputs go through `ground_requirement`, a guard that drops any field the m
 from __future__ import annotations
 
 import json
-import os
 import re
 import time
 
 from .catalog import CITY_ALIASES
+from .llm import make_client, resolve_model
 from .schema import UNITS, Requirement, TraceStep
 
 URGENT_WORDS = {"urgent", "urgently", "asap", "jaldi", "turant", "immediately", "immediate"}
@@ -149,10 +149,9 @@ class LLMExtractor:
 
     def __init__(self, client=None, model: str | None = None):
         if client is None:
-            import anthropic  # imported lazily so rules mode needs no API key
-            client = anthropic.Anthropic()
+            client = make_client()  # Claude or Gemini; imported lazily so rules mode needs no API key
         self.client = client
-        self.model = model or os.getenv("BUYLEAD_MODEL", "claude-haiku-5-5")
+        self.model = resolve_model(client, model)
 
     def extract(self, inquiry: str) -> tuple[Requirement, TraceStep]:
         t0 = time.perf_counter()

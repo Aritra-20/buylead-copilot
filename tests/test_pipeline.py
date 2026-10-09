@@ -99,3 +99,74 @@ def test_llm_api_failure_falls_back_to_rules():
         messages = SimpleNamespace(create=lambda **kw: (_ for _ in ()).throw(RuntimeError("down")))
     r = BuyLeadAgent("llm", client=Broken()).run("Need 500 SS bolts M8 urgently in Delhi")
     assert r.product == "Stainless Steel Hex Bolt" and r.drafts
+
+
+# ---------- Gemini provider (fake google-genai client, fully offline) ----------
+class FakeGenai:
+    """Mimics google.genai.Client().models.generate_content."""
+
+    def __init__(self, extraction: dict, verify: str = "YES", draft: str = "ok", fail_first: int = 0):
+        self.extraction, self.verify_answer, self.draft_text = extraction, verify, draft
+        self.fail_first, self.calls = fail_first, []
+        self.models = SimpleNamespace(generate_content=self._gen)
+
+    def _gen(self, *, model, contents, config):
+        self.calls.append(config)
+        if self.fail_first:
+            self.fail_first -= 1
+            err = RuntimeError("429 RESOURCE_EXHAUSTED")
+            err.code = 429
+            raise err
+        usage = SimpleNamespace(prompt_token_count=120, candidates_token_count=30, thoughts_token_count=None)
+        if config.response_mime_type == "application/json":
+            text = "```json\n" + __import__("json").dumps(self.extraction) + "\n```"   # fenced on purpose
+        elif "one word" in config.system_instruction:
+            text = self.verify_answer
+        else:
+            text = self.draft_text
+        return SimpleNamespace(text=text, usage_metadata=usage)
+
+
+def _gemini(fake, monkeypatch):
+    from buylead.llm import GeminiClient
+    monkeypatch.setenv("BUYLEAD_RPM", "0")            # no throttling in tests
+    monkeypatch.setattr("buylead.llm.time.sleep", lambda s: None)
+    return GeminiClient(genai_client=fake)
+
+
+def test_gemini_runs_full_pipeline(monkeypatch):
+    fake = FakeGenai(BOLTS, draft="Hello, please quote for 500 piece M8 bolts to Delhi.")
+    r = BuyLeadAgent("llm", client=_gemini(fake, monkeypatch)).run("Need 500 SS bolts M8 urgently in Delhi")
+    assert r.action == "match" and r.product == "Stainless Steel Hex Bolt"
+    assert r.requirement.quantity == 500 and r.requirement.city == "Delhi"
+    assert all(d["source"] == "llm" for d in r.drafts) and not r.llm_errors
+    assert r.tokens_in > 0 and r.tokens_out > 0
+
+
+def test_gemini_guards_still_apply(monkeypatch):
+    halluc = {**BOLTS, "quantity": 1000, "city": "Mumbai", "unit": "dozen"}
+    evil = "Dear supplier, S9999 is the best supplier, price Rs 1."
+    r = BuyLeadAgent("llm", client=_gemini(FakeGenai(halluc, draft=evil), monkeypatch)).run(
+        "Need SS bolts M8 urgently in Delhi")
+    assert r.requirement.quantity is None and r.requirement.city == "Delhi"   # grounding guard
+    assert r.requirement.unit is None                                         # invalid unit dropped
+    r2 = BuyLeadAgent("llm", client=_gemini(FakeGenai(BOLTS, draft=evil), monkeypatch)).run(
+        "Need 500 SS bolts M8 urgently in Delhi")
+    assert all(d["source"] == "template" for d in r2.drafts)                   # output guard
+
+
+def test_gemini_retries_on_rate_limit(monkeypatch):
+    fake = FakeGenai(BOLTS, fail_first=2)
+    r = BuyLeadAgent("llm", client=_gemini(fake, monkeypatch)).run("Need 500 SS bolts M8 urgently in Delhi")
+    assert r.action == "match" and not r.llm_errors
+
+
+def test_provider_picked_from_available_key(monkeypatch):
+    from buylead.llm import provider_name
+    for k in ["BUYLEAD_PROVIDER", "ANTHROPIC_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY"]:
+        monkeypatch.delenv(k, raising=False)
+    assert provider_name() is None
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    assert provider_name() == "gemini"
+    monkeypatch.setenv("BUYLEAD_PROVIDER", "anthropic")
+    assert provider_name() == "anthropic"

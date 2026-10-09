@@ -62,3 +62,8 @@ class Result:
     @property
     def guard_events(self) -> list[str]:
         return [n for s in self.trace for n in s.notes if n.startswith("GUARD")]
+
+    @property
+    def llm_errors(self) -> list[str]:
+        """LLM calls that failed and fell back to rules/templates (so an 'LLM' eval can't silently be rules)."""
+        return [n for s in self.trace for n in s.notes if "failed (" in n]
