@@ -40,19 +40,24 @@ Every LLM step falls back to the rules engine if the API fails, and every run pr
 ## Evaluation
 Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** written after the baseline was built (not tuned on). Both cover clean English, Hinglish, typos, missing quantity, missing location, out-of-catalog products and prompt-injection attempts.
 
-**Rules baseline (no LLM)**: these are measured results, reproducible with the commands below:
+**Rules baseline vs. Gemini (`gemini-3.5-flash-lite`)**: measured results, reproducible with the commands below:
 
-| Metric | Dev (40) | Held-out (20) |
-|---|---|---|
-| Action accuracy (match / clarify / refuse) | 95.0% | 85.0% |
-| Product resolution accuracy | 100.0% | 93.8% |
-| Quantity accuracy | 100.0% | 93.8% |
-| Top-3 supplier precision | 100.0% | 100.0% |
-| False-match rate on out-of-catalog (↓) | 33.3% | 50.0% |
-| Unsafe-output rate in drafts (↓) | 0.0% | 0.0% |
-| Latency p50 | ~2 ms | ~2 ms |
+| Metric | Rules · Dev (40) | Gemini · Dev (40) | Rules · Held-out (20) | Gemini · Held-out (20) |
+|---|---|---|---|---|
+| Action accuracy (match / clarify / refuse) | 95.0% | **100.0%** | 85.0% | **100.0%** |
+| Product resolution accuracy | 100.0% | 100.0% | 93.8% | **100.0%** |
+| Quantity accuracy | 100.0% | 100.0% | 93.8% | **100.0%** |
+| City accuracy | 100.0% | 100.0% | 93.8% | 93.8% |
+| Top-3 supplier precision | 100.0% | 100.0% | 100.0% | 100.0% |
+| False matches on out-of-catalog inquiries (↓) | 33.3% (2/6) | **0% (0/6)** | 50.0% (2/4) | **0% (0/4)** |
+| Unsafe-output rate in drafts (↓) | 0% | 0% (90 drafts) | 0% | 0% (42 drafts) |
+| LLM calls that failed and fell back to rules | - | 0 | - | 0 |
+| Avg tokens per query (in / out) | 0 / 0 | 1,303 / 276 | 0 / 0 | 1,263 / 265 |
+| Latency p50 | ~2 ms | ~30 s\* | ~2 ms | ~30 s\* |
 
-**What this shows:** the baseline looks great on the set it was built against and degrades on unseen phrasing - especially **false matches** ("laptops" → office chairs, "copper scrap" → copper wire, "turmeric powder" → powder-free gloves). That gap is exactly what the LLM extractor + verifier are for. Full per-case tables: [`docs/EVAL_REPORT_RULES.md`](docs/EVAL_REPORT_RULES.md), [`docs/EVAL_REPORT_RULES_HELDOUT.md`](docs/EVAL_REPORT_RULES_HELDOUT.md).
+**What this shows:** the rules baseline looks great on the set it was built against and degrades on unseen phrasing - especially **false matches** ("laptops" → office chairs, "copper scrap" → copper wire, "turmeric powder" → powder-free gloves). With the LLM extractor + verifier, held-out action accuracy rises from **85% to 100%** and false matches fall from **50% to 0%**, while the output guards keep unsafe drafts at 0%. The trade-off is cost and speed: ~1,550 tokens and up to 5 LLM calls per inquiry instead of a 2 ms rules lookup - which is why the PRD keeps rules as the fallback.
+
+\* Latency is dominated by the free-tier throttle (10 requests/min ≈ 6 s between calls, up to 5 calls per inquiry), not the model; unthrottled latency is still to be measured. Caveat: the sets are small (60 cases, 10 out-of-catalog), so treat 100% / 0% as "no errors observed", not a guarantee. Full per-case tables: [`EVAL_REPORT_RULES.md`](docs/EVAL_REPORT_RULES.md), [`EVAL_REPORT_RULES_HELDOUT.md`](docs/EVAL_REPORT_RULES_HELDOUT.md), [`EVAL_REPORT_LLM.md`](docs/EVAL_REPORT_LLM.md), [`EVAL_REPORT_LLM_HELDOUT.md`](docs/EVAL_REPORT_LLM_HELDOUT.md).
 
 **LLM mode** - run it yourself with an API key; the report adds the provider/model, tokens/query, cost/query, p95 latency and how many LLM calls failed and fell back to rules:
 ```bash
@@ -93,7 +98,7 @@ tests/                offline tests (fake Claude and Gemini clients)
 ## Limitations & next steps
 - Catalog is synthetic and small (231 suppliers / 20 products); real catalogs need neural embeddings + a vector DB (the `EmbeddingIndex` is built to be swapped).
 - The match threshold was tuned on the dev set - hence the held-out set; re-tune whenever the catalog changes.
-- Next: LLM-vs-baseline comparison on cost and p95 latency, then a shadow launch measuring "% inquiries with ≥1 relevant quote in 24h".
+- Next: measure unthrottled latency and paid-tier cost per inquiry, run the same evals on Claude for a provider comparison, grow the eval set (especially out-of-catalog cases), then a shadow launch measuring "% inquiries with ≥1 relevant quote in 24h".
 
 ---
 Built by [Aritra Pal](https://www.aritrapal.me) · Python, Claude API / Gemini API, scikit-learn, Streamlit · built with Claude Code
