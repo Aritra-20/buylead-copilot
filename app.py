@@ -1,9 +1,15 @@
 """Streamlit demo UI.   Run:  streamlit run app.py"""
+import os
+
 import pandas as pd
 import streamlit as st
 
-from buylead import BuyLeadAgent
-from buylead.llm import default_model, provider_name
+# One inquiry = up to 5 LLM calls. The eval's 10-requests/min throttle would make each demo
+# click take ~30 s, so the demo sends calls back-to-back and relies on retry-on-429 instead.
+os.environ.setdefault("BUYLEAD_RPM", "0")
+
+from buylead import BuyLeadAgent  # noqa: E402
+from buylead.llm import default_model, provider_name  # noqa: E402
 
 st.set_page_config(page_title="BuyLead Copilot", page_icon="📦", layout="wide")
 st.title("📦 BuyLead Copilot")
