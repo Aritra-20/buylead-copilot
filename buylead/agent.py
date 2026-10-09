@@ -14,12 +14,25 @@ import time
 from .catalog import products
 from .draft import LLMDrafter, LLMVerifier, check_draft, template_draft
 from .extract import LLMExtractor, RuleExtractor, ground_requirement
-from .retrieve import retrieve
+from .llm import GeminiEmbedder, embeddings_backend
+from .retrieve import NeuralIndex, retrieve
 from .schema import Result, TraceStep
 
 
+_NEURAL: dict[str, NeuralIndex] = {}   # product vectors are embedded once per process
+
+
+def neural_index(embedder=None) -> NeuralIndex:
+    embedder = embedder or GeminiEmbedder()
+    key = getattr(embedder, "model", "custom")
+    if key not in _NEURAL:
+        _NEURAL[key] = NeuralIndex(embedder)
+    return _NEURAL[key]
+
+
 class BuyLeadAgent:
-    def __init__(self, mode: str = "rules", client=None, model: str | None = None):
+    def __init__(self, mode: str = "rules", client=None, model: str | None = None, embedder=None,
+                 embeddings: str | None = None):
         if mode not in {"rules", "llm"}:
             raise ValueError("mode must be 'rules' or 'llm'")
         self.mode = mode
@@ -30,6 +43,9 @@ class BuyLeadAgent:
             self.drafter = LLMDrafter(self.extractor.client, self.extractor.model)
         else:
             self.extractor, self.verifier, self.drafter = self.rules, None, None
+        # Retrieval backend: neural (Gemini embeddings) in LLM mode, TF-IDF otherwise / as fallback.
+        self.embeddings = embeddings or ("gemini" if embedder is not None else embeddings_backend(mode))
+        self._embedder = embedder
 
     def run(self, inquiry: str) -> Result:
         trace: list[TraceStep] = []
@@ -48,8 +64,18 @@ class BuyLeadAgent:
             res.action, res.refusal_reason = "refuse", "This looks like a service/job request, not a product purchase."
             return res
 
-        # 2. Retrieve
-        product, sim, _, suppliers, rstep = retrieve(req)
+        # 2. Retrieve (neural embeddings fall back to TF-IDF on any API error, and the failure is logged)
+        fallback_note = None
+        if self.embeddings == "gemini":
+            try:
+                product, sim, _, suppliers, rstep = retrieve(req, neural_index(self._embedder))
+            except Exception as e:  # noqa: BLE001
+                fallback_note = f"neural embedding failed ({type(e).__name__}); used TF-IDF fallback"
+                product, sim, _, suppliers, rstep = retrieve(req)
+        else:
+            product, sim, _, suppliers, rstep = retrieve(req)
+        if fallback_note:
+            rstep.notes.append(fallback_note)
         trace.append(rstep)
         res.retrieval_score = round(sim, 3)
 

@@ -170,3 +170,91 @@ def test_provider_picked_from_available_key(monkeypatch):
     assert provider_name() == "gemini"
     monkeypatch.setenv("BUYLEAD_PROVIDER", "anthropic")
     assert provider_name() == "anthropic"
+
+
+# ---------- neural retrieval (fake embedder, offline) ----------
+class FakeEmbedder:
+    """Bag-of-words hashing vectors: products sharing words with the query score higher."""
+
+    model = "fake-embed"
+
+    def _vec(self, text):
+        import re
+        import numpy as np
+        v = np.zeros(256, dtype="float32")
+        for w in re.findall(r"[a-z0-9]+", text.lower()):
+            v[hash(w) % 256] += 1
+        return v / max(np.linalg.norm(v), 1e-9)
+
+    def embed_documents(self, titles, texts):
+        import numpy as np
+        return np.stack([self._vec(t + " " + x) for t, x in zip(titles, texts)])
+
+    def embed_query(self, text):
+        return self._vec(text.split("query:")[-1])
+
+
+def _neural_agent(monkeypatch, extraction, embedder=None, threshold="0.2"):
+    monkeypatch.setattr("buylead.agent._NEURAL", {})
+    monkeypatch.setenv("BUYLEAD_EMBED_THRESHOLD", threshold)
+    return BuyLeadAgent("llm", client=FakeClient(extraction, draft="ok"), embedder=embedder or FakeEmbedder())
+
+
+def test_neural_retrieval_matches_product(monkeypatch):
+    r = _neural_agent(monkeypatch, BOLTS).run("Need 500 SS bolts M8 urgently in Delhi")
+    assert r.action == "match" and r.product == "Stainless Steel Hex Bolt"
+    assert any(s.step == "retrieve:gemini" for s in r.trace) and not r.llm_errors
+
+
+def test_neural_threshold_refuses_weak_match(monkeypatch):
+    r = _neural_agent(monkeypatch, BOLTS, threshold="0.99").run("Need 500 SS bolts M8 urgently in Delhi")
+    assert r.action == "refuse"
+
+
+def test_embedding_failure_falls_back_to_tfidf(monkeypatch):
+    class Broken(FakeEmbedder):
+        model = "broken"
+
+        def embed_query(self, text):
+            raise RuntimeError("embedding API down")
+    r = _neural_agent(monkeypatch, BOLTS, embedder=Broken()).run("Need 500 SS bolts M8 urgently in Delhi")
+    assert r.product == "Stainless Steel Hex Bolt"                    # still answered, via TF-IDF
+    assert any("neural embedding failed" in e for e in r.llm_errors)   # and the fallback is reported
+
+
+def test_threshold_calibration_picks_widest_safe_cut():
+    from buylead.tune import best_threshold
+    rows = [{"sim": 0.82, "top": "A", "gold": "A", "should_refuse": False},
+            {"sim": 0.75, "top": "B", "gold": "B", "should_refuse": False},
+            {"sim": 0.41, "top": "A", "gold": None, "should_refuse": True},
+            {"sim": 0.38, "top": "B", "gold": None, "should_refuse": True}]
+    t, acc, margin = best_threshold(rows)
+    assert acc == 1.0 and 0.41 < t < 0.75
+
+
+def test_gemini_embedder_wrapper_normalises_and_uses_task_prefixes():
+    import numpy as np
+    from buylead.llm import GeminiEmbedder
+    seen = []
+
+    def embed_content(*, model, contents, config):
+        seen.append((model, list(contents), config.output_dimensionality))
+        return SimpleNamespace(embeddings=[SimpleNamespace(values=[3.0, 4.0] + [0.0] * 766) for _ in contents])
+
+    emb = GeminiEmbedder(genai_client=SimpleNamespace(models=SimpleNamespace(embed_content=embed_content)))
+    docs = emb.embed_documents(["Nitrile Gloves"], ["Nitrile Gloves. Category: safety"])
+    q = emb.embed_query("nitrile gloves")
+    assert docs.shape == (1, 768) and abs(float(np.linalg.norm(q)) - 1) < 1e-5
+    assert seen[0][0] == "gemini-embedding-2" and seen[0][2] == 768
+    assert seen[0][1][0].startswith("title: Nitrile Gloves | text:")
+    assert seen[1][1][0] == "task: search result | query: nitrile gloves"
+
+
+def test_neural_retrieval_waits_for_calibration(monkeypatch, tmp_path):
+    from buylead import llm
+    monkeypatch.setattr("buylead.catalog.DATA_DIR", tmp_path)        # no embedding_threshold.json here
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    assert llm.embeddings_backend("llm") == "tfidf"                    # key alone is not enough
+    (tmp_path / "embedding_threshold.json").write_text('{"threshold": 0.6}')
+    assert llm.embeddings_backend("llm") == "gemini"
+    assert llm.embeddings_backend("rules") == "tfidf"

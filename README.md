@@ -6,7 +6,7 @@
 
 **▶ Live demo: [buylead-copilot.streamlit.app](https://buylead-copilot.streamlit.app)** (Gemini engine)
 
-Built as a product + AI prototype for B2B marketplaces such as IndiaMART. All supplier data is **synthetic** (generated with a fixed seed in `scripts/generate_catalog.py`).
+Built as a product + AI prototype for B2B marketplaces, where buyer inquiries are high-volume, short and often Hinglish. All supplier data is **synthetic** (generated with a fixed seed in `scripts/generate_catalog.py`).
 
 ![screenshot](docs/screenshot.png)
 
@@ -30,19 +30,19 @@ buyer text ──► 1. EXTRACT ──► 2. GROUND ──► 3. RETRIEVE ──
 |---|---|---|
 | Extract | System prompt + 3 few-shot examples + **forced tool call** with a JSON schema (Gemini: JSON mode with the same schema) → always-valid structured output | Structured prompting, few-shot, tool use |
 | Ground | Every quantity / city / spec must appear in the buyer's text, otherwise it's dropped and logged | Hallucination detection |
-| Retrieve | Product resolution by cosine similarity over word + character n-gram vectors (typo-tolerant); **refuses below a confidence threshold** | Embeddings, vector search, RAG |
+| Retrieve | Product resolution by cosine similarity over **neural embeddings** (Gemini `gemini-embedding-2`) in LLM mode, or word + character n-gram TF-IDF vectors (typo-tolerant, offline) in the rules baseline; **refuses below a confidence threshold calibrated on the dev set** | Embeddings, vector search, RAG |
 | Verify | A cheap second LLM call rejects false matches vector search can't (e.g. "turmeric *powder*" ≠ "*powder*-free gloves") | LLM-as-judge, re-ranking |
 | Decide | `match` / `clarify` (asks one question when quantity is missing) / `refuse` (routes to a human) | Agent decision policy |
 | Draft + guard | Drafts use only catalog facts; any rupee value or supplier not in the record → fallback template | Output guardrails, prompt-injection defence |
 
-Every LLM step falls back to the rules engine if the API fails, and every run produces a **trace** with latency, tokens and guard events.
+Every LLM step falls back to the rules engine if the API fails (and neural retrieval falls back to TF-IDF), and every run produces a **trace** with latency, tokens and guard events.
 
 **Model-agnostic:** the agent runs on **Claude** or **Gemini** behind one interface (`buylead/llm.py`), so the same prompts, guardrails and eval harness compare providers like-for-like. Pick one with `BUYLEAD_PROVIDER=anthropic|gemini`, or just set one API key.
 
 ## Evaluation
 Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** written after the baseline was built (not tuned on). Both cover clean English, Hinglish, typos, missing quantity, missing location, out-of-catalog products and prompt-injection attempts.
 
-**Rules baseline vs. Gemini (`gemini-3.5-flash-lite`)**: measured results, reproducible with the commands below:
+**Rules baseline vs. Gemini (`gemini-3.5-flash-lite`, TF-IDF retrieval; the neural-embedding rerun is next)**: measured results, reproducible with the commands below:
 
 | Metric | Rules · Dev (40) | Gemini · Dev (40) | Rules · Held-out (20) | Gemini · Held-out (20) |
 |---|---|---|---|---|
@@ -55,6 +55,7 @@ Two hand-labelled sets: a **40-case dev set** and a **20-case held-out set** wri
 | Unsafe-output rate in drafts (↓) | 0% | 0% (90 drafts) | 0% | 0% (42 drafts) |
 | LLM calls that failed and fell back to rules | - | 0 | - | 0 |
 | Avg tokens per query (in / out) | 0 / 0 | 1,303 / 276 | 0 / 0 | 1,263 / 265 |
+| Est. LLM cost per 1,000 inquiries (paid list price) | $0 | ≈ $1.08 | $0 | ≈ $1.04 |
 | Latency p50 | ~2 ms | ~30 s\* | ~2 ms | ~30 s\* |
 
 **What this shows:** the rules baseline looks great on the set it was built against and degrades on unseen phrasing - especially **false matches** ("laptops" → office chairs, "copper scrap" → copper wire, "turmeric powder" → powder-free gloves). With the LLM extractor + verifier, held-out action accuracy rises from **85% to 100%** and false matches fall from **50% to 0%**, while the output guards keep unsafe drafts at 0%. The trade-off is cost and speed: ~1,550 tokens and up to 5 LLM calls per inquiry instead of a 2 ms rules lookup - which is why the PRD keeps rules as the fallback.
@@ -70,7 +71,13 @@ export GEMINI_API_KEY=...               # PowerShell: $env:GEMINI_API_KEY = "...
 python -m buylead.eval --mode llm --report docs/EVAL_REPORT_LLM.md
 python -m buylead.eval --mode llm --data heldout_set.jsonl --report docs/EVAL_REPORT_LLM_HELDOUT.md
 ```
-On the Gemini free tier, requests are throttled to `BUYLEAD_RPM` (default 10/min) and retried on rate limits, so a full run takes ~20 minutes.
+With neural embeddings, calibrate the refusal threshold on the **dev set only** first (the held-out set is never used for tuning):
+```bash
+python -m buylead.tune                  # writes data/embedding_threshold.json
+```
+Requests are retried with backoff on rate limits. On a free-tier key, also set `BUYLEAD_RPM=10` to stay under the per-minute limit. Cost per query is computed from paid-tier list prices built into `buylead/llm.py` (override with `BUYLEAD_PRICE_IN` / `BUYLEAD_PRICE_OUT`).
+
+**Demo cost guardrails** (the public demo runs on a paid key): inquiries are capped at 300 characters, each visitor gets 20 LLM runs, and an in-app ledger stops LLM calls after **$0.25/day** of estimated spend (≈ under $8/month), falling back to the free rules engine. The ledger resets on app restart, so the hard stop is a budget alert on the billing account.
 
 ## Run it
 ```bash
@@ -98,7 +105,7 @@ tests/                offline tests (fake Claude and Gemini clients)
 ```
 
 ## Limitations & next steps
-- Catalog is synthetic and small (231 suppliers / 20 products); real catalogs need neural embeddings + a vector DB (the `EmbeddingIndex` is built to be swapped).
+- Catalog is synthetic and small (231 suppliers / 20 products); a real catalog would put the same `search()` interface on a vector DB.
 - The match threshold was tuned on the dev set - hence the held-out set; re-tune whenever the catalog changes.
 - Next: measure unthrottled latency and paid-tier cost per inquiry, run the same evals on Claude for a provider comparison, grow the eval set (especially out-of-catalog cases), then a shadow launch measuring "% inquiries with ≥1 relevant quote in 24h".
 

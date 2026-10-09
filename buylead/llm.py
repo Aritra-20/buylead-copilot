@@ -18,6 +18,18 @@ from types import SimpleNamespace
 from .schema import UNITS
 
 DEFAULT_MODELS = {"anthropic": "claude-haiku-5-5", "gemini": "gemini-3.5-flash-lite"}
+DEFAULT_EMBED_MODEL = "gemini-embedding-2"
+
+# Paid-tier list prices, USD per 1M tokens (input, output), from ai.google.dev/gemini-api/docs/pricing
+# (checked Oct 2026). Used for cost-per-query when BUYLEAD_PRICE_IN/OUT are not set.
+PRICES = {"gemini-3.5-flash-lite": (0.30, 2.50)}
+
+
+def model_price(model: str) -> tuple[float, float] | None:
+    p_in, p_out = os.getenv("BUYLEAD_PRICE_IN"), os.getenv("BUYLEAD_PRICE_OUT")
+    if p_in and p_out:
+        return float(p_in), float(p_out)
+    return PRICES.get(model)
 
 
 def provider_name() -> str | None:
@@ -88,8 +100,8 @@ class GeminiClient:
     * A forced tool call becomes Gemini JSON mode, with the tool's JSON schema spelled out in
       the system instruction. The parsed JSON comes back as a `tool_use` block, exactly like Claude.
     * Plain text calls map system prompt -> system_instruction.
-    * Requests are throttled to BUYLEAD_RPM (default 10/min, under the free-tier limit) and
-      retried with backoff on 429 / 5xx.
+    * Requests are throttled only if BUYLEAD_RPM is set (e.g. 10 on the free tier; paid-tier
+      limits are far higher), and always retried with backoff on 429 / 5xx.
     """
 
     def __init__(self, api_key: str | None = None, model: str | None = None, genai_client=None):
@@ -98,7 +110,7 @@ class GeminiClient:
             genai_client = genai.Client(api_key=api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
         self._genai = genai_client
         self.model = model or default_model("gemini")
-        self._throttle = _Throttle(float(os.getenv("BUYLEAD_RPM", "10")))
+        self._throttle = _Throttle(float(os.getenv("BUYLEAD_RPM") or 0))
         self.messages = SimpleNamespace(create=self._create)
 
     def _generate(self, system: str, user: str, max_tokens: int, json_mode: bool):
@@ -140,3 +152,64 @@ class GeminiClient:
         tokens_in = getattr(um, "prompt_token_count", 0) or 0
         tokens_out = (getattr(um, "candidates_token_count", 0) or 0) + (getattr(um, "thoughts_token_count", 0) or 0)
         return SimpleNamespace(content=[block], usage=SimpleNamespace(input_tokens=tokens_in, output_tokens=tokens_out))
+
+
+class GeminiEmbedder:
+    """Neural text embeddings via the Gemini API (`gemini-embedding-2`, 100+ languages).
+
+    Vectors are L2-normalised so a dot product is cosine similarity. Uses the task prefixes the
+    model expects for asymmetric search (short query vs. longer product document).
+    """
+
+    def __init__(self, api_key: str | None = None, model: str | None = None, genai_client=None, dim: int = 768):
+        if genai_client is None:
+            from google import genai
+            genai_client = genai.Client(api_key=api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
+        self._genai = genai_client
+        self.model = model or os.getenv("BUYLEAD_EMBED_MODEL") or DEFAULT_EMBED_MODEL
+        self.dim = dim
+
+    def _embed(self, texts: list[str]):
+        import numpy as np
+        from google.genai import types
+
+        out = []
+        for i in range(0, len(texts), 50):
+            for attempt in range(5):
+                try:
+                    res = self._genai.models.embed_content(
+                        model=self.model, contents=texts[i:i + 50],
+                        config=types.EmbedContentConfig(output_dimensionality=self.dim))
+                    break
+                except Exception as e:  # noqa: BLE001
+                    if attempt == 4 or not _retryable(e):
+                        raise
+                    time.sleep(15 * (attempt + 1))
+            out.extend(e.values for e in res.embeddings)
+        v = np.asarray(out, dtype="float32")
+        return v / np.maximum(np.linalg.norm(v, axis=1, keepdims=True), 1e-12)
+
+    def embed_documents(self, titles: list[str], texts: list[str]):
+        return self._embed([f"title: {t} | text: {x}" for t, x in zip(titles, texts)])
+
+    def embed_query(self, text: str):
+        return self._embed([f"task: search result | query: {text}"])[0]
+
+
+def embeddings_backend(mode: str) -> str:
+    """'gemini' (neural) in LLM mode with a Gemini key AND a calibrated threshold; else 'tfidf'.
+
+    Neural similarities live on a different scale from TF-IDF, so an uncalibrated threshold could
+    silently refuse good inquiries. Until `python -m buylead.tune` has written the threshold (or
+    BUYLEAD_EMBED_THRESHOLD is set), the agent keeps TF-IDF. BUYLEAD_EMBEDDINGS=gemini|tfidf forces a choice.
+    """
+    from .catalog import DATA_DIR
+
+    choice = os.getenv("BUYLEAD_EMBEDDINGS", "").strip().lower()
+    if mode != "llm" or choice == "tfidf":
+        return "tfidf"
+    if choice == "gemini":
+        return "gemini"
+    has_key = bool(os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY"))
+    calibrated = bool(os.getenv("BUYLEAD_EMBED_THRESHOLD")) or (DATA_DIR / "embedding_threshold.json").exists()
+    return "gemini" if has_key and calibrated else "tfidf"

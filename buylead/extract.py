@@ -100,7 +100,7 @@ class RuleExtractor:
         return req, TraceStep("extract:rules", (time.perf_counter() - t0) * 1000)
 
 
-SYSTEM_PROMPT = """You are the intake step of a B2B marketplace (think IndiaMART). Buyers post short, messy
+SYSTEM_PROMPT = """You are the intake step of an Indian B2B marketplace. Buyers post short, messy
 inquiries in English or Hinglish, often with typos. Convert each into the `record_requirement` tool call.
 
 Rules:
