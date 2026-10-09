@@ -170,23 +170,30 @@ class GeminiEmbedder:
         self.dim = dim
 
     def _embed(self, texts: list[str]):
+        """One request per text. `gemini-embedding-2` is multimodal: a list passed as `contents` can be
+        read as ONE multi-part input and come back as a single vector, which silently makes every
+        product look identical. One text per call is unambiguous; the count check makes it fail loudly."""
         import numpy as np
         from google.genai import types
 
         out = []
-        for i in range(0, len(texts), 50):
+        for text in texts:
             for attempt in range(5):
                 try:
                     res = self._genai.models.embed_content(
-                        model=self.model, contents=texts[i:i + 50],
+                        model=self.model, contents=text,
                         config=types.EmbedContentConfig(output_dimensionality=self.dim))
                     break
                 except Exception as e:  # noqa: BLE001
                     if attempt == 4 or not _retryable(e):
                         raise
                     time.sleep(15 * (attempt + 1))
-            out.extend(e.values for e in res.embeddings)
+            if len(res.embeddings) != 1:
+                raise ValueError(f"expected 1 embedding per text, got {len(res.embeddings)}")
+            out.append(res.embeddings[0].values)
         v = np.asarray(out, dtype="float32")
+        if len(v) != len(texts):
+            raise ValueError(f"expected {len(texts)} embeddings, got {len(v)}")
         return v / np.maximum(np.linalg.norm(v, axis=1, keepdims=True), 1e-12)
 
     def embed_documents(self, titles: list[str], texts: list[str]):

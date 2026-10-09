@@ -118,6 +118,10 @@ class NeuralIndex:
         self.embedder = embedder
         self.names, _, prose = _product_texts()
         self.matrix = embedder.embed_documents(self.names, prose)
+        if len(self.matrix) != len(self.names):
+            raise ValueError(f"got {len(self.matrix)} product vectors for {len(self.names)} products")
+        if len(self.names) > 1 and float((self.matrix @ self.matrix.T)[0, 1:].max()) > 0.999:
+            raise ValueError("product vectors are identical - embedding call is misconfigured")
         self.threshold = neural_threshold() if threshold is None else threshold
 
     def search(self, query: str, k: int = 3) -> list[tuple[str, float]]:

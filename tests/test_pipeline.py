@@ -238,16 +238,16 @@ def test_gemini_embedder_wrapper_normalises_and_uses_task_prefixes():
     seen = []
 
     def embed_content(*, model, contents, config):
-        seen.append((model, list(contents), config.output_dimensionality))
-        return SimpleNamespace(embeddings=[SimpleNamespace(values=[3.0, 4.0] + [0.0] * 766) for _ in contents])
+        seen.append((model, contents, config.output_dimensionality))
+        return SimpleNamespace(embeddings=[SimpleNamespace(values=[3.0, 4.0] + [0.0] * 766)])
 
     emb = GeminiEmbedder(genai_client=SimpleNamespace(models=SimpleNamespace(embed_content=embed_content)))
     docs = emb.embed_documents(["Nitrile Gloves"], ["Nitrile Gloves. Category: safety"])
     q = emb.embed_query("nitrile gloves")
     assert docs.shape == (1, 768) and abs(float(np.linalg.norm(q)) - 1) < 1e-5
     assert seen[0][0] == "gemini-embedding-2" and seen[0][2] == 768
-    assert seen[0][1][0].startswith("title: Nitrile Gloves | text:")
-    assert seen[1][1][0] == "task: search result | query: nitrile gloves"
+    assert seen[0][1].startswith("title: Nitrile Gloves | text:")
+    assert seen[1][1] == "task: search result | query: nitrile gloves"
 
 
 def test_neural_retrieval_waits_for_calibration(monkeypatch, tmp_path):
@@ -278,3 +278,31 @@ def test_impact_uses_measured_heldout_rates():
     from buylead.impact import compare
     r = compare()
     assert {"manual", "rules"} <= set(r["scenarios"]) and "rules" in r["rates"]
+
+
+def test_embedder_sends_one_text_per_call_even_if_api_merges_lists():
+    """Regression: a list in `contents` can come back as ONE vector; the wrapper must not batch."""
+    from buylead.llm import GeminiEmbedder
+    calls = []
+
+    def embed_content(*, model, contents, config):
+        calls.append(contents)
+        n = len(contents) if isinstance(contents, list) else 1
+        vec = [float(len(str(contents)))] + [1.0] * 767
+        return SimpleNamespace(embeddings=[SimpleNamespace(values=vec)] * (1 if isinstance(contents, list) else n))
+
+    emb = GeminiEmbedder(genai_client=SimpleNamespace(models=SimpleNamespace(embed_content=embed_content)))
+    docs = emb.embed_documents(["A", "Bb", "Ccc"], ["x", "yy", "zzz"])
+    assert docs.shape[0] == 3 and all(isinstance(c, str) for c in calls)
+
+
+def test_identical_product_vectors_are_rejected(monkeypatch):
+    import numpy as np
+    from buylead.retrieve import NeuralIndex
+
+    class Same(FakeEmbedder):
+        def embed_documents(self, titles, texts):
+            return np.ones((len(titles), 8), dtype="float32") / np.sqrt(8)
+    import pytest
+    with pytest.raises(ValueError):
+        NeuralIndex(Same(), threshold=0.5)

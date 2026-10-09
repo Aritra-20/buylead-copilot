@@ -57,10 +57,19 @@ def best_threshold(rows: list[dict]) -> tuple[float, float, float]:
     return round(mid, 4), ok / len(rows), round(margin, 4)
 
 
+MIN_DEV_ACCURACY = 0.8   # below this, retrieval itself is broken - don't calibrate on top of it
+
+
 def main() -> None:
     rows = collect()
     t, acc, margin = best_threshold(rows)
     model = neural_index().embedder.model
+    distinct_top = len({r["top"] for r in rows})
+    if acc < MIN_DEV_ACCURACY or distinct_top < 3:
+        if THRESHOLD_FILE.exists():
+            THRESHOLD_FILE.unlink()   # never leave a bad calibration behind - the agent falls back to TF-IDF
+        raise SystemExit(f"\nNOT saved: dev retrieval accuracy {acc:.1%}, {distinct_top} distinct top products. "
+                         "Neural retrieval looks broken; the agent keeps using TF-IDF.")
     THRESHOLD_FILE.write_text(json.dumps({"threshold": t, "embedding_model": model, "calibrated_on": "eval_set.jsonl (dev)",
                                           "dev_retrieval_accuracy": round(acc, 4), "margin": margin}, indent=2) + "\n",
                               encoding="utf-8")
