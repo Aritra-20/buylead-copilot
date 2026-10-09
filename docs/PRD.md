@@ -47,6 +47,7 @@ Both are expensive:
 - **Input metrics:** action accuracy, false-match rate (out-of-catalog), top-3 supplier precision,
   local-supplier-in-top-3, clarification rate, unsafe-output rate (target 0), cost and p95 latency per lead.
 - **Guardrail:** supplier lead-rejection rate must not rise.
+- **Business case:** `buylead/impact.py` turns measured held-out rates into monthly lead-ops hours, wrong leads to suppliers and LLM cost under editable assumptions (see README → Business impact).
 
 ## 7. Evaluation (see `docs/EVAL_REPORT_*.md`)
 40-case dev set + 20-case held-out set covering clean English, Hinglish, typos, missing fields,

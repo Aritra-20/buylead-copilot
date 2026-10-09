@@ -60,6 +60,8 @@ def run(mode: str, report: Path | None, dataset: str = "eval_set.jsonl") -> dict
         c[key][0] += int(bool(ok)); c[key][1] += 1
 
     guard_catches, llm_errors = 0, 0
+    outcome = {"match": 0, "clarify": 0, "refuse": 0, "wrong_match": 0}
+    seg_n, seg_refuse, seg_wrong = {"in": 0, "ooc": 0}, {"in": 0, "ooc": 0}, {"in": 0, "ooc": 0}
     for i, case in enumerate(cases, 1):
         g, r = case["gold"], agent.run(case["inquiry"])
         err = f"  LLM ERROR: {r.llm_errors[0]}" if r.llm_errors else ""
@@ -68,6 +70,15 @@ def run(mode: str, report: Path | None, dataset: str = "eval_set.jsonl") -> dict
         guard_catches += len(r.guard_events)
         llm_errors += len(r.llm_errors)
         score("action", r.action == g["action"])
+        outcome[r.action] += 1
+        if r.action == "match" and (g["action"] == "refuse" or r.product != g.get("product")):
+            outcome["wrong_match"] += 1   # a bad lead would reach suppliers
+        seg = "ooc" if g["action"] == "refuse" else "in"
+        seg_n[seg] += 1
+        if r.action == "refuse":
+            seg_refuse[seg] += 1          # routed to a human
+        elif r.action == "match" and (seg == "ooc" or r.product != g.get("product")):
+            seg_wrong[seg] += 1           # wrong product -> bad lead to suppliers
         if g["action"] == "refuse":
             score("false_match", r.action != "refuse")
         else:
@@ -109,9 +120,20 @@ def run(mode: str, report: Path | None, dataset: str = "eval_set.jsonl") -> dict
         "drafts_checked": c["unsafe"][1], "guard_catches": guard_catches,
         "latency_p50_ms": statistics.median(lat), "latency_p95_ms": lat_sorted[int(0.95 * (len(lat) - 1))],
         "avg_tokens_in": avg_in, "avg_tokens_out": avg_out, "cost_per_query_usd": cost,
+        # Outcome mix over ALL cases - feeds the business-impact model (buylead/impact.py)
+        "share_match": outcome["match"] / len(cases), "share_clarify": outcome["clarify"] / len(cases),
+        "share_refuse": outcome["refuse"] / len(cases), "wrong_match_rate": outcome["wrong_match"] / len(cases),
+        # Per segment: in-catalog (gold match/clarify) vs out-of-catalog / not-a-product (gold refuse)
+        "in_catalog_cases": seg_n["in"], "out_of_catalog_cases": seg_n["ooc"],
+        "in_catalog_refuse_rate": seg_refuse["in"] / max(seg_n["in"], 1),
+        "in_catalog_wrong_match_rate": seg_wrong["in"] / max(seg_n["in"], 1),
+        "out_of_catalog_refuse_rate": seg_refuse["ooc"] / max(seg_n["ooc"], 1),
+        "out_of_catalog_false_match_rate": seg_wrong["ooc"] / max(seg_n["ooc"], 1),
     }
     if report:
         report.write_text(_markdown(summary, rows, dataset), encoding="utf-8")
+        report.with_suffix(".json").write_text(json.dumps({**summary, "dataset": dataset}, indent=2) + "\n",
+                                               encoding="utf-8")
     return summary
 
 

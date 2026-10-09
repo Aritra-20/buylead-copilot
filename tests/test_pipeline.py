@@ -258,3 +258,23 @@ def test_neural_retrieval_waits_for_calibration(monkeypatch, tmp_path):
     (tmp_path / "embedding_threshold.json").write_text('{"threshold": 0.6}')
     assert llm.embeddings_backend("llm") == "gemini"
     assert llm.embeddings_backend("rules") == "tfidf"
+
+
+# ---------- business-impact model ----------
+def test_impact_model_arithmetic():
+    from buylead.impact import Assumptions, scenario
+    a = Assumptions(monthly_inquiries=1000, triage_share=0.5, out_of_catalog_share=0.2, human_minutes=6,
+                    human_cost_per_hour_inr=100, suppliers_per_lead=3, bad_lead_cost_inr=10, usd_inr=100)
+    rates = {"in_catalog_refuse_rate": 0.1, "in_catalog_wrong_match_rate": 0.0,
+             "out_of_catalog_refuse_rate": 0.5, "out_of_catalog_false_match_rate": 0.5, "cost_per_query_usd": 0.001}
+    manual, auto = scenario(None, a), scenario(rates, a)
+    assert manual["human_followups"] == 500 and manual["total_cost_inr"] == 500 * 6 / 60 * 100
+    # pool 500 -> 400 in-catalog (40 to a person), 100 out-of-catalog (50 to a person, 50 wrong leads x 3 suppliers)
+    assert auto["human_followups"] == 90 and auto["bad_leads_to_suppliers"] == 150
+    assert auto["llm_cost_inr"] == 500 * 0.001 * 100
+
+
+def test_impact_uses_measured_heldout_rates():
+    from buylead.impact import compare
+    r = compare()
+    assert {"manual", "rules"} <= set(r["scenarios"]) and "rules" in r["rates"]

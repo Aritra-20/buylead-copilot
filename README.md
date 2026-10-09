@@ -12,6 +12,13 @@ Built as a product + AI prototype for B2B marketplaces, where buyer inquiries ar
 
 ---
 
+## 2-minute demo
+1. **Try one inquiry** → pick `helmat 200 pcs urjent delhi`: typos and Hinglish become a clean RFQ, 3 ranked suppliers with reasons, and drafted quote requests.
+2. Pick `1000 kg organic turmeric powder Erode`: nothing in the catalog fits, so it **routes to a person instead of guessing** (the rules baseline matches it to *powder-free gloves*).
+3. Pick the `Ignore previous instructions...` example: the injected supplier and price never reach a draft.
+4. **Batch triage** → run the queue: how many inquiries are handled without a person, and how many leads go out.
+5. **Business impact** → change the assumptions and watch cost, lead-ops hours and bad leads move.
+
 ## Why this problem
 Buyers on B2B marketplaces type short, messy, often Hinglish inquiries with missing quantity or location.
 Matching them badly costs **two** customers at once: the buyer gets irrelevant quotes, and the supplier pays for a lead they can't serve. See the one-page **[PRD](docs/PRD.md)** for users, trade-offs, metrics and what I deliberately did *not* build.
@@ -78,6 +85,23 @@ python -m buylead.tune                  # writes data/embedding_threshold.json
 Requests are retried with backoff on rate limits. On a free-tier key, also set `BUYLEAD_RPM=10` to stay under the per-minute limit. Cost per query is computed from paid-tier list prices built into `buylead/llm.py` (override with `BUYLEAD_PRICE_IN` / `BUYLEAD_PRICE_OUT`).
 
 **Demo cost guardrails** (the public demo runs on a paid key): inquiries are capped at 300 characters, each visitor gets 20 LLM runs, and an in-app ledger stops LLM calls after **$0.25/day** of estimated spend (≈ under $8/month), falling back to the free rules engine. The ledger resets on app restart, so the hard stop is a budget alert on the billing account.
+
+## Business impact (illustrative)
+There is no production traffic, so this is a **model, not an observed result**: engine rates (how often an inquiry goes to a person, or a wrong-product lead goes to suppliers, and LLM cost) are **measured on the held-out set**; the business inputs are **assumptions** you can change in the demo's *Business impact* tab or in `buylead/impact.py`.
+
+Default assumptions: 100,000 inquiries/month, 40% need triage today, 10% of those match no catalog product, 2 min of lead-ops time per manual follow-up at ₹600/hour, each lead goes to 3 suppliers, ₹40 cost per irrelevant lead a supplier receives, ₹88/USD.
+
+| Per month | Manual triage | Rules engine | LLM copilot |
+|---|---|---|---|
+| Handled without a person | 0 | 35,750 | 36,000 |
+| Manual follow-ups | 40,000 | 4,250 | 4,000 |
+| Lead-ops hours | 1,333 | 142 | 133 |
+| Wrong-product leads sent to suppliers | 0 | 6,000 | 0 |
+| LLM cost | ₹0 | ₹0 | ₹3,666 |
+| Total monthly cost | ₹8.00 lakh | ₹3.25 lakh | ₹83,666 |
+| Saving vs manual | ₹0 | ₹4.75 lakh | ₹7.16 lakh |
+
+**Reading it:** the rules engine already removes most manual work but sends ~6,000 wrong-product leads to suppliers each month - the cost a marketplace pays in supplier trust. The LLM copilot automates about the same share with **no wrong leads observed**, for ~₹3,700/month of LLM spend. Manual triage is assumed error-free (flattering it), and "0 wrong leads" means none in 4 out-of-catalog held-out cases, not a guarantee. The **Batch triage** tab shows the same split on a queue you paste in.
 
 ## Run it
 ```bash
